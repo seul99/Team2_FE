@@ -1,0 +1,71 @@
+# =======================================
+# 🔧 Node & Build Artifacts
+# =======================================
+node_modules
+dist
+dist-ssr
+*.local
+*.env.local
+.env.*.local
+
+# =======================================
+# 🧩 Environment & Config
+# =======================================
+.env
+.env.development
+.env.production
+.env.test
+
+# =======================================
+# 🧠 Logs
+# =======================================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =======================================
+# ⚙️ Editor & System Files
+# =======================================
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =======================================
+# 📦 TypeScript
+# =======================================
+*.tsbuildinfo
+
+# =======================================
+# 🧪 Testing
+# =======================================
+coverage
+jest-html-reporters-*.html
+*.lcov
+
+# =======================================
+# 🧰 Misc (Optional)
+# =======================================
+/*.log
+temp/
+tmp/
+.cache/
+.parcel-cache/
+vite.config.timestamp-*.mjs
+
+# =======================================
+# 💾 OS Specific
+# =======================================
+ehthumbs.db
+Icon?
+Desktop.ini
