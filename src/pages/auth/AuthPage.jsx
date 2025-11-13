@@ -2,6 +2,7 @@
 import React from "react";
 import { Card, LoginButton } from "../../styles/StyledAuth";
 import logo from "/images/auth/kakaoLogo.png";
+import NavigationBar from "../../components/NavigationBar";
 
 const AuthPage = () => {
   return (

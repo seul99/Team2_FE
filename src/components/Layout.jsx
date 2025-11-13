@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import NavigationBar from "./NavigationBar";
 
 const Container = styled.div`
   width: 100vw;
@@ -29,10 +30,17 @@ const Box = styled.div`
   overflow-x: hidden;
 `;
 const Layout = () => {
+  const location = useLocation();
+
+  const navPages = ["/MainPage", "/SavePage", "/SearchPage", "/ChatbotPage"];
+  const isShowNav = navPages.includes(location.pathname);
+
+  console.log("현재 경로는: ", location.pathname);
   return (
     <Container>
       <Box>
         <Outlet />
+        {isShowNav && <NavigationBar />}
       </Box>
     </Container>
   );
