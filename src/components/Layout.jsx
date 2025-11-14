@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import NavigationBar from "./NavigationBar";
+import loginBg from "/images/components/LoginBackground.png";
+import defaultBg from "/images/components/Background.png";
 
 const Container = styled.div`
   width: 100vw;
@@ -23,7 +25,7 @@ const Box = styled.div`
   height: 100%;
   max-width: 390px;
   max-height: 844px;
-  background: url("../images/components/Background.png");
+  background-image: url(${(props) => props.backgroundImage});
   display: flex;
   flex-direction: column;
   cursor: default;
@@ -32,15 +34,16 @@ const Box = styled.div`
 `;
 const Layout = () => {
   const location = useLocation();
-
-  const navPages = ["/MainPage", "/SavePage", "/SearchPage", "/ChatbotPage"];
-  const isShowNav = navPages.includes(location.pathname);
+  const backgroundMap = {
+    "/": loginBg,
+    "/MainPage": defaultBg,
+  };
   return (
     <Container>
-      <Box>
-        {isShowNav && <Header />}
+      <Box backgroundImage={backgroundMap[location.pathname]}>
+        {location.pathname != "/" && <Header />}
         <Outlet />
-        {isShowNav && <NavigationBar />}
+        {location.pathname != "/" && <NavigationBar />}
       </Box>
     </Container>
   );
