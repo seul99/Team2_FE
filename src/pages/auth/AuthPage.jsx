@@ -1,17 +1,33 @@
 // /
 import React from "react";
-import { Card, LoginButton } from "../../styles/StyledAuth";
-import logo from "/images/auth/kakaoLogo.png";
-import NavigationBar from "../../components/NavigationBar";
+import {
+  ImageWrapper,
+  Card,
+  AppLogo,
+  CardInfo,
+  LoginButton,
+} from "../../styles/StyledAuth";
+import kakaoLogo from "/images/auth/kakaoLogo.png";
+import ribbonPuppys from "/images/auth/RibbonPuppys.png";
 
 const AuthPage = () => {
   return (
     <div>
-      <Card title="가입하기" subtitle="계정에 로그인을 해주세요.">
-        <LoginButton>
-          <img src={logo} style={{ width: "17px", marginRight: "9px" }} />
-          카카오로 로그인
-        </LoginButton>
+      <ImageWrapper>
+        <img
+          src={ribbonPuppys}
+          style={{
+            width: "246px",
+          }}
+        />
+      </ImageWrapper>
+      <Card>
+        <AppLogo />
+        <CardInfo>계정에 로그인을 해주세요.</CardInfo>
+
+        
+          <LoginButton>카카오 로그인</LoginButton>
+        
       </Card>
     </div>
   );
