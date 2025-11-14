@@ -36,14 +36,15 @@ const Layout = () => {
   const location = useLocation();
   const backgroundMap = {
     "/": loginBg,
+    "/WelcomePage": loginBg,
     "/MainPage": defaultBg,
   };
   return (
     <Container>
       <Box backgroundImage={backgroundMap[location.pathname]}>
-        {location.pathname != "/" && <Header />}
+        {location.pathname != "/" || ("WelecomePage" && <Header />)}
         <Outlet />
-        {location.pathname != "/" && <NavigationBar />}
+        {location.pathname != "/" || ("WelecomePage" && <NavigationBar />)}
       </Box>
     </Container>
   );
