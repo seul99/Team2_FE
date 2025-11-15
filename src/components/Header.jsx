@@ -1,28 +1,50 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const Container = styled.div``;
 const Box = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
-  margin-top: 50px;
-
-  img {
-    width: 18.745px;
-    height: 18.745px;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
+  padding: 15px 25px;
 `;
 
-const Header = () => {
+const Logo = styled.img`
+  width: 93px;
+  height: 12.467px;
+  flex-shrink: 0;
+`;
+
+const LikeBtn = styled.img`
+  width: 30px;
+  cursor: pointer;
+`;
+
+const BackBtn = styled.img`
+  cursor: pointer;
+`;
+
+const Header = ({ type }) => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Box>
-        <div>로고자리</div>
-        <img src="../images/components/serch.svg" alt="search" />
+        {type === "logo" && (
+          <Logo src="../images/components/logo.svg" alt="logo" />
+        )}
+        {type === "back" && (
+          <BackBtn
+            src="../images/components/Backbtn.svg"
+            alt="Backbtn"
+            onClick={() => navigate("/mainPage")}
+          />
+        )}
+        {type === "logo" && <SearchBar />}
+        {type === "back" && (
+          <LikeBtn src="../images/components/LikeBtn.svg" alt="LikeBtn" />
+        )}
       </Box>
     </Container>
   );

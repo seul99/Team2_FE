@@ -27,18 +27,38 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   cursor: default;
-  overflow-y: hidden;
+
   overflow-x: hidden;
+
+  /* Chrome, Safari, Edge */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* Optional: iOS smooth */
+  -webkit-overflow-scrolling: touch;
 `;
+
 const Layout = () => {
   const location = useLocation();
 
   const navPages = ["/MainPage", "/SavePage", "/SearchPage", "/ChatbotPage"];
   const isShowNav = navPages.includes(location.pathname);
+
+  const backBtnPages = ["/detail"];
+  
+  const isAuthPage = location.pathname === "/";
+  const isBackPage = backBtnPages.some((path) =>
+    location.pathname.startsWith(path)
+  );
+
   return (
     <Container>
       <Box>
-        <Header />
+        {!isAuthPage && <Header type={isBackPage ? "back" : "logo"} />}
         <Outlet />
         {isShowNav && <NavigationBar />}
       </Box>

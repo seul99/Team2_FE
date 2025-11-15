@@ -35,6 +35,8 @@ export const BottomBox = styled.div`
 export const Img = styled.img`
   width: 120px;
   height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
 `;
 export const Info = styled.div`
   font-family: "Pretendard", sans-serif;

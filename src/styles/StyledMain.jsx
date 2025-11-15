@@ -43,9 +43,8 @@ export const TapName = styled.div`
 `;
 
 export const BottomBox = styled.div`
-  //   gap: 16px;
-  //   padding: 16px 24px;
-  height: 350px;
+  height: 400px;
+  padding-bottom: 20%;
   overflow-y: auto;
   scroll-behavior: smooth;
 
