@@ -67,7 +67,7 @@ const NavigationBar = () => {
 
   const tabs = [
     {
-      path: "/mainPage",
+      path: "/MainPage",
       label: "홈",
       icon: "/images/common/homeIcon.png",
     },

@@ -8,6 +8,7 @@ import SearchPage from "./pages/search/searchPage";
 import SavePage from "./pages/save/SavePage";
 import Detail from "./pages/detail/Detail";
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -15,11 +16,11 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<AuthPage />} />
-          <Route path="/mainPage" element={<MainPage />} />
+          <Route path="/MainPage" element={<MainPage />} />
           <Route path="/ChatbotPage" element={<ChatbotPage />} />
           <Route path="/SearchPage" element={<SearchPage />} />
           <Route path="/SavePage" element={<SavePage />} />
-          {/* <Route path="/Detail/:id" element={<Detail />} /> */}
+          // <Route path="/Detail/:id" element={<Detail />} />
           <Route path="/detail/:desertionNo" element={<Detail />} />
         </Route>
       </Routes>
