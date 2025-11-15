@@ -38,7 +38,7 @@ const Header = ({ type }) => {
           <BackBtn
             src="../images/components/Backbtn.svg"
             alt="Backbtn"
-            onClick={() => navigate("/mainPage")}
+            onClick={() => navigate("/MainPage")}
           />
         )}
         {type === "logo" && <SearchBar />}
