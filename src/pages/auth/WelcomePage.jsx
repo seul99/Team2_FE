@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const WelcomePage = () => {
   const navigate = useNavigate();
+  const nickname = localStorage.getItem("nickname");
   return (
     <div>
       <ImageWrapper>
@@ -23,7 +24,7 @@ const WelcomePage = () => {
         />
       </ImageWrapper>
       <WelcomeWrapper>
-        <WelcomeName>리본님</WelcomeName>
+        <WelcomeName>{nickname ? `${nickname}님` : "username"}</WelcomeName>
         <WelcomeSub>가입을 환영합니다</WelcomeSub>
         <GoToMainButton onClick={() => navigate("/MainPage")}>
           🐾 동물 보러가기

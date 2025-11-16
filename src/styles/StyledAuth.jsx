@@ -103,6 +103,7 @@ export const GoToMainButton = styled.button`
   align-items: flex-start;
   gap: 5px;
   margin: 26px;
+  color: black;
   border-radius: 8px;
   border: 0.7px solid #d3d3d3;
   background: rgba(255, 255, 255, 0.9);
@@ -146,9 +147,9 @@ function LoginButtonWrapper({ children }) {
   return <KaKaoButtonWrapper>{children}</KaKaoButtonWrapper>;
 }
 
-function LoginButton({ children }) {
+function LoginButton({ children, ...props }) {
   return (
-    <KaKaoLoginButton>
+    <KaKaoLoginButton {...props}>
       <img
         src={kakaoLogo}
         style={{

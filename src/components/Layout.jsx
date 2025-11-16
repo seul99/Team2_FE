@@ -26,6 +26,7 @@ const Box = styled.div`
   max-width: 390px;
   max-height: 844px;
   background-image: url(${(props) => props.$backgroundImage});
+
   display: flex;
   flex-direction: column;
   cursor: default;
