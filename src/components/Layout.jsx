@@ -25,7 +25,10 @@ const Box = styled.div`
   height: 100%;
   max-width: 390px;
   max-height: 844px;
-  background-image: url(${(props) => props.backgroundImage});
+  background-image: url(${(props) => props.$bg});
+  background-size: cover;
+  background-position: center;
+
   display: flex;
   flex-direction: column;
   cursor: default;
@@ -60,7 +63,7 @@ const Layout = () => {
   const backgroundImage = isAuthPage ? loginBg : defaultBg;
   return (
     <Container>
-      <Box backgroundImage={backgroundImage}>
+      <Box $bg={backgroundImage}>
         {!isAuthPage && <Header type={isBackPage ? "back" : "logo"} />}
         <Outlet />
         {isShowNav && <NavigationBar />}

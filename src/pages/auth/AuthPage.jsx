@@ -1,4 +1,3 @@
-// /
 import React from "react";
 import {
   ImageWrapper,
@@ -8,26 +7,28 @@ import {
   CardInfo,
   LoginButton,
 } from "../../styles/StyledAuth";
-import kakaoLogo from "/images/auth/kakaoLogo.png";
+import { userManager } from "../../../oidc-config";
+
 import ribbonPuppys from "/images/auth/RibbonPuppys.png";
 
 const AuthPage = () => {
+  const handleKakaoLogin = () => {
+    userManager.signinRedirect();
+  };
+
   return (
     <div>
       <ImageWrapper>
-        <img
-          src={ribbonPuppys}
-          style={{
-            width: "246px",
-          }}
-        />
+        <img src={ribbonPuppys} style={{ width: "246px" }} />
       </ImageWrapper>
+
       <Introduction />
+
       <Card>
         <AppLogo />
         <CardInfo>계정에 로그인을 해주세요.</CardInfo>
 
-        <LoginButton>카카오 로그인</LoginButton>
+        <LoginButton onClick={handleKakaoLogin}>카카오 로그인</LoginButton>
       </Card>
     </div>
   );
