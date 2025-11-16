@@ -36,6 +36,7 @@ export default function OidcCallback() {
           // 토큰 저장
           localStorage.setItem("access", res.data.data.accessToken);
           localStorage.setItem("refresh", res.data.data.refreshToken);
+          localStorage.setItem("nickname", res.data.data.nickname);
 
           navigate("/WelcomePage");
         } catch (err) {
