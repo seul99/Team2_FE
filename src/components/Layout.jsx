@@ -5,7 +5,7 @@ import Header from "./Header";
 import NavigationBar from "./NavigationBar";
 import loginBg from "/images/components/LoginBackground.png";
 import defaultBg from "/images/components/Background.png";
-
+import chatbotBg from "/images/components/ChatbotBackground.png";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -27,6 +27,8 @@ const Box = styled.div`
   max-height: 844px;
   background-image: url(${(props) => props.$backgroundImage});
 
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   cursor: default;
@@ -44,9 +46,23 @@ const Box = styled.div`
   /* Optional: iOS smooth */
   -webkit-overflow-scrolling: touch;
 `;
+const bgMap = {
+  "/": loginBg,
+  "/WelcomePage": loginBg,
+  "/MainPage": defaultBg,
+  "/Detail": defaultBg, //변경필요
+  "/SavePage": defaultBg, //변경필요
+  "/SearchPage": defaultBg, // 변경 필요
+  "/ChatbotPage": chatbotBg, // 변경 필요
+};
+
+const getBackgroundImage = (pathname) => {
+  return bgMap[pathname];
+};
 
 const Layout = () => {
   const location = useLocation();
+
   const navPages = [
     "/MainPage",
     "/SavePage",
@@ -54,11 +70,12 @@ const Layout = () => {
     "/ChatbotPage",
     "/Shelter",
   ];
+
   const isShowNav = navPages.includes(location.pathname);
 
   const backBtnPages = ["/detail"];
 
-  const onlyBackPage = ["/Filter", "/Shelter"];
+  const onlyBackPage = ["/Filter", "/Shelter", "/ChatbotPage"];
 
   const isAuthPage =
     location.pathname === "/" || location.pathname === "/WelcomePage";
@@ -74,8 +91,8 @@ const Layout = () => {
   } else if (backBtnPages.some((path) => location.pathname.startsWith(path))) {
     headerType = "back";
   }
+  const backgroundImage = getBackgroundImage(location.pathname);
 
-  const backgroundImage = isAuthPage ? loginBg : defaultBg;
   return (
     <Container>
       <Box $backgroundImage={backgroundImage}>
