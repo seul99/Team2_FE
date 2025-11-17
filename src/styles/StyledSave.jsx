@@ -16,7 +16,6 @@ export const Container = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 export const Box = styled.div`
-  //   border: 1px solid #333;
   width: 100%;
   //   min-height: 100vh;
   display: flex;
@@ -24,9 +23,13 @@ export const Box = styled.div`
   align-items: center;
   margin-bottom: 10vh;
 
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin-top: 10px;
+  ${(props) =>
+    props.$hasItems &&
+    `
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 10px;
+  `}
 `;
 export const BgLogo = styled.img``;
 export const Coment = styled.div`
@@ -48,6 +51,7 @@ export const GotoMainBtn = styled.div`
   line-height: 140.5%; /* 22.48px */
   display: inline-flex;
   padding: 8px 15px;
+  widht: 50px;
   justify-content: flex-end;
   align-items: flex-start;
   border-radius: 8px;

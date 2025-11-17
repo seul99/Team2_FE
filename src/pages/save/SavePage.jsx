@@ -15,7 +15,7 @@ const SavePage = () => {
   }, [location]);
   return (
     <S.Container>
-      <S.Box>
+      <S.Box $hasItems={list.length > 0}>
         {list.length === 0 ? (
           <>
             <S.BgLogo src="/images/components/likedLogo.svg" />
