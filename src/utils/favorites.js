@@ -6,10 +6,17 @@ const KEY = "favoriteAnimals";
 export const saveFavorite = (item) => {
   const saved = JSON.parse(localStorage.getItem(KEY)) || [];
 
-  // 이미 존재하는지 체크
   const exists = saved.some((v) => v.desertionNo === item.desertionNo);
   if (!exists) {
-    saved.push(item);
+    const thumbnail = Array.isArray(item.images)
+      ? item.images[0] // 배열이면 첫 번째 이미지
+      : item.thumbnailImage || item.images || ""; // 백엔드가 준 썸네일 있으면 그거
+
+    saved.push({
+      ...item,
+      thumbnailImage: thumbnail,
+    });
+
     localStorage.setItem(KEY, JSON.stringify(saved));
   }
 };

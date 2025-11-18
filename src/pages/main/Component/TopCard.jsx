@@ -12,6 +12,8 @@ const TopCard = ({ data }) => {
   };
 
   const formatDate = (dateStr) => {
+    if (!dateStr) return "정보 없음";
+
     const year = dateStr.slice(0, 4);
     const month = dateStr.slice(4, 6);
     const day = dateStr.slice(6, 8);
@@ -22,17 +24,22 @@ const TopCard = ({ data }) => {
     <T.Container>
       <T.Box>
         <T.TopBox>
-          <T.Img src={data.images} alt={data.breedName} />
+          <T.Img src={data.thumbnailImage} alt={data.breedName} />
           <T.Info>
-            <T.Name>
-              {data.breedName} {data.age} {data.sex}
-            </T.Name>
+            <T.Name>{data.breedName}</T.Name>
+            <T.BrithText>
+              {data.age}
+              <br />
+              {data.sex}
+            </T.BrithText>
+
             <T.Code>보호번호 {data.desertionNo}</T.Code>
             <T.ShelterName>{data.shelterName}</T.ShelterName>
           </T.Info>
         </T.TopBox>
         <T.BottomBox>
-          <T.Date>{formatDate(data.noticeEndDate)}</T.Date>
+          {/* 공고일 정보가 없어 찾은일로 데이터 변경 */}
+          <T.Date>{formatDate(data.foundDate)}</T.Date>
           <T.GotoDetail onClick={handleClick}>보러가기</T.GotoDetail>
         </T.BottomBox>
       </T.Box>

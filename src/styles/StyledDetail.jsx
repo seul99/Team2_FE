@@ -59,7 +59,13 @@ export const ModalImg = styled.img`
   max-width: 500px;
   border-radius: 10px;
   object-fit: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 `;
+
+export const ModalContent = styled.div``;
 // 정보박스
 export const DetailBox = styled.div`
   width: 100%;
@@ -110,15 +116,14 @@ export const Mark = styled.div`
 export const CheckList = styled.div`
   background: #fff;
   display: flex;
-  margin: 0 auto;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 30px;
-  padding-top: 20px;
+  // margin: 0 auto;
+  padding-top: 1.5vh;
 `;
 export const BoxInfo = styled.div`
   display: flex;
-  padding: 17px 10px;
+  padding: 1.6vh 1vh;
   text-align: center;
   flex-direction: column;
   justify-content: center;

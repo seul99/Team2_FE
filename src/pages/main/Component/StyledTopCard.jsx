@@ -89,3 +89,6 @@ export const GotoDetail = styled.div`
     opacity: 0.8;
   }
 `;
+export const BrithText = styled.div`
+  font-size: 13px;
+`;

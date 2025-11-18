@@ -4,17 +4,19 @@ import { useNavigate } from "react-router-dom";
 
 const BottomCard = ({ item }) => {
   const navigate = useNavigate();
-  console.log("BottomCard item:", item);
 
-  // 버튼 클릭 시 상세페이지로 이동
-  //   const handleClick = () => {
-  //     navigate(`/detail/${item.desertionNo}`);
-  //   };
   if (!item) return null;
   return (
     <B.Container>
       <B.Box onClick={() => navigate(`/detail/${item.desertionNo}`)}>
-        <B.Img src={item.images} alt={item.breedName} />
+        <B.Img
+          src={
+            item.thumbnailImage ||
+            (Array.isArray(item.images) ? item.images[0] : item.images) ||
+            "/images/default.png"
+          }
+          alt={item.breedName}
+        />
         <B.Code>
           보호번호 <br />
           {item.desertionNo}

@@ -1,34 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as D from "../../styles/StyledDetail";
-import { mock } from "../main/Component/mockData";
+// import { mock } from "../main/Component/mockData";
 import { useNavigate } from "react-router-dom";
 import { saveFavorite } from "../../utils/favorites";
 import { removeFavorite } from "../../utils/favorites";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import API from "../../api/axiosInstance";
 
 const Detail = () => {
   const { desertionNo } = useParams();
   const navigate = useNavigate();
-
-  const item = mock.find((v) => String(v.desertionNo) === String(desertionNo));
-
-  //   API연결 코드, import, item 지우기
-  //   const [item, setItem] = useState(null);   // 상세 데이터 저장
-  //   const [loading, setLoading] = useState(true);
-
-  //   useEffect(() => {
-  //   const fetchDetail = async () => {
-  //     const res = await axios.get(`/api/animals/${desertionNo}`);
-  //     setItem(res.data);
-  //   };
-  //   fetchDetail();
-  // }, [desertionNo]);
-  //   if (loading) return <div>로딩중</div>;
-  //   if (!item) return <div>데이터가 없음</div>;
-
-  if (!item) {
-    return <div>데이터가 없음</div>;
-  }
 
   // 사진 크게 확대하기
   const [isOpen, setIsOpen] = useState(false);
@@ -40,14 +23,57 @@ const Detail = () => {
 
   // 찜하기
   const [isLiked, setIsLiked] = useState(false);
+
+  // API연결 코드, import, item 지우기
+  const [data, setData] = useState(null); // 상세 데이터 저장
+  const [loading, setLoading] = useState(true);
+
+  // 사진 여러장 넘기기
+  const images = Array.isArray(data?.images)
+    ? [...new Set(data.images.filter((img) => img && img.trim() !== ""))]
+    : [];
+
   useEffect(() => {
+    console.log("받은 이미지 데이터:", data?.images);
+  }, [data]);
+
+  //  api연결
+  useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const res = await API.get(`/api/animals/${desertionNo}`);
+        setData(res.data.data); // data 안으로 접근
+      } catch (err) {
+        console.error("Detail API Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDetail();
+  }, [desertionNo]);
+
+  // 찜하기
+  useEffect(() => {
+    if (!data) return;
     const saved = JSON.parse(localStorage.getItem("favoriteAnimals")) || [];
-    const exists = saved.some((v) => v.desertionNo === item.desertionNo);
+    const exists = saved.some((v) => v.desertionNo === data.desertionNo);
     setIsLiked(exists);
-  }, [item.desertionNo]);
+  }, [data]);
+
+  // 사진 넘기기
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  if (loading) return <div>로딩중</div>;
+  if (!data) return <div>데이터가 없음</div>;
 
   return (
-    <D.Container bg={item.images}>
+    <D.Container $bg={data.images}>
       <D.Box>
         <D.Header>
           <D.BackBtn
@@ -64,42 +90,61 @@ const Detail = () => {
             alt="likeBtn"
             onClick={() => {
               if (isLiked) {
-                removeFavorite(item.desertionNo);
+                removeFavorite(data.desertionNo);
               } else {
-                saveFavorite(item);
+                saveFavorite(data);
               }
               setIsLiked(!isLiked);
             }}
           />
         </D.Header>
         {/* 이미지 */}
-        <D.MainImg
-          src={item.images}
-          alt={item.breedName}
-          onClick={() => {
-            setSelectedImg(item.images);
-            setIsOpen(true);
-          }}
-        />
+
+        {images.length === 1 ? (
+          <D.MainImg
+            src={images[0]}
+            alt={data.breedName}
+            onClick={() => setIsOpen(true)}
+          />
+        ) : (
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={1}
+            style={{ width: "100%", borderRadius: "10px" }}
+          >
+            {images.map((img, i) => (
+              <SwiperSlide key={i}>
+                <D.MainImg src={img} onClick={() => setIsOpen(true)} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+        {/* 모달창 */}
         {isOpen && (
           <D.ModalOverlay onClick={() => setIsOpen(false)}>
-            <D.ModalImg src={selectedImg} />
+            <Swiper slidesPerView={1} pagination={{ clickable: true }}>
+              {images.map((img, i) => (
+                <SwiperSlide key={i}>
+                  <D.ModalImg src={img} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </D.ModalOverlay>
         )}
         {/* 기본정보 표시 */}
         <D.DetailBox>
           <D.BagicInfo>
-            <D.DesertionNo>보호번호 {item.desertionNo}</D.DesertionNo>
+            <D.DesertionNo>보호번호 {data.desertionNo}</D.DesertionNo>
             <D.DetailInfo>
-              {item.age} {item.weight} {item.foundDate} {item.shelterName}
+              {data.age} {data.weight} {data.foundDate} {data.shelterName}
             </D.DetailInfo>
-            <D.Mark>{item.specialMark}</D.Mark>
+            <D.Mark>{data.specialMark}</D.Mark>
             <D.CheckList>
               <D.BoxInfo>
-                {item.animalTypeName === "개" ? "🐕" : "🐈"} {item.breedName}
+                {data.animalTypeName === "개" ? "🐕" : "🐈"} {data.breedName}
               </D.BoxInfo>
-              <D.BoxInfo>🌿 {item.neuterStatus}</D.BoxInfo>
-              <D.BoxInfo>🛡️ {item.status}</D.BoxInfo> {/* 보호중 상태 표시?*/}
+              <D.BoxInfo>🌿 {data.neuterStatus}</D.BoxInfo>
+              <D.BoxInfo>🛡️ {data.status}</D.BoxInfo> {/* 보호중 상태 표시?*/}
             </D.CheckList>
           </D.BagicInfo>
 
@@ -114,9 +159,9 @@ const Detail = () => {
                 <img src="../images/components/rightBtn.svg" />
               </D.BtnBox>
               <D.SlideBox open={openHealth}>
-                <D.Text>건강정보 : {item.healthInfo}</D.Text>
-                <D.Text>백신접종 : {item.vaccination}</D.Text>
-                <D.Text>질병여부 : {item.vaccination}</D.Text> <br /> <br />{" "}
+                <D.Text>건강정보 : {data.healthInfo}</D.Text>
+                <D.Text>백신접종 : {data.vaccination}</D.Text>
+                <D.Text>질병여부 : {data.vaccination}</D.Text> <br /> <br />{" "}
                 <br />
                 <D.Text>*자세한 내용은 보호소로 전화문의 부탁드립니다.</D.Text>
               </D.SlideBox>
@@ -129,9 +174,9 @@ const Detail = () => {
                 💕 성격 메모 <img src="../images/components/rightBtn.svg" />
               </D.BtnBox>
               <D.SlideBox open={openMemo}>
-                {item.personality ? (
+                {data.personality ? (
                   <>
-                    <D.Text>{item.personality}</D.Text>
+                    <D.Text>{data.personality}</D.Text>
                     <br />
                     <br />
                     <br />
@@ -146,11 +191,11 @@ const Detail = () => {
               onClick={() =>
                 navigate("/Shelter", {
                   state: {
-                    shelterName: item.shelterName,
-                    shelterTel: item.shelterTel,
-                    shelterAddress: item.shelterAddress.split("(")[0],
-                    province: item.province,
-                    city: item.city,
+                    shelterName: data.shelterName,
+                    shelterTel: data.shelterTel,
+                    shelterAddress: data.shelterAddress.split("(")[0],
+                    province: data.province,
+                    city: data.city,
                   },
                 })
               }

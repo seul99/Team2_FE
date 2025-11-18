@@ -4,26 +4,34 @@ import * as M from "../../styles/StyledMain";
 import TopCardList from "./Component/TopCardList";
 import BottomCard from "./Component/BottomCard";
 import { useNavigate } from "react-router-dom";
-import { mock } from "./Component/mockData.js";
+// import { mock } from "./Component/mockData.js";
+import API from "../../api/axiosInstance";
 
-const MainPage = ({ item }) => {
+const MainPage = () => {
   const [selectedTab, setSelectedTab] = useState("all");
   const navigate = useNavigate();
-  // // API연결
-  // const [animalList, setAnimalList] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchAnimals = async () => {
-  //     try {
-  //       const res = await fetch("https://ganzi.duckdns.org/api/animals");
-  //       const json = await res.json();
-  //       setAnimalList(json.data);
-  //     } catch (e) {
-  //       console.log("API 불러오기 실패 : ", e);
-  //     }
-  //   };
-  //   fetchAnimals();
-  // }, []);
+  const [bottomList, setBottomList] = useState([]);
+
+  useEffect(() => {
+    const fetchBottomList = async () => {
+      try {
+        const res = await API.get("/api/animals", {
+          params: {
+            page: 0,
+            size: 20,
+            isLatest: true, // 최신순으로 20개 가져오기
+          },
+        });
+
+        setBottomList(res.data.data.content);
+      } catch (err) {
+        console.error("BottomCard API error:", err);
+      }
+    };
+
+    fetchBottomList();
+  }, []);
 
   const tabList = [
     { key: "all", label: "전체" },
@@ -31,10 +39,19 @@ const MainPage = ({ item }) => {
     { key: "cat", label: "고양이" },
   ];
 
+  // const filterData =
+  //   selectedTab === "all"
+  //     ? data
+  //     : data.filter((item) =>
+  //         selectedTab === "dog"
+  //           ? item.animalTypeName === "개"
+  //           : item.animalTypeName === "고양이"
+  //       );
+
   const filterData =
     selectedTab === "all"
-      ? mock
-      : mock.filter((item) =>
+      ? bottomList
+      : bottomList.filter((item) =>
           selectedTab === "dog"
             ? item.animalTypeName === "개"
             : item.animalTypeName === "고양이"
