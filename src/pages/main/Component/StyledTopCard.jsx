@@ -18,7 +18,7 @@ export const Box = styled.div`
   width: 300px;
   height: 121px;
   aspect-ratio: 16 / 7; /* 16:10 비율 유지 */
-  object-fit: cover;
+  // object-fit: cover;
   // background: #fff8cf65;
   border: 1px solid #f86f8e;
   border-radius: 25px;
@@ -33,6 +33,7 @@ export const Img = styled.img`
   height: 90px;
   border-radius: 12px;
   object-fit: cover;
+  margin-right: 20px;
 `;
 export const Info = styled.div`
   font-family: "Pretendard", sans-serif;
@@ -41,7 +42,9 @@ export const Info = styled.div`
   font-weight: 400;
   position: absolute;
   top: 0px;
-  right: 10vh;
+  // right: 0px;
+  // text-align: right;
+  padding-left: 100px;
 `;
 
 export const Name = styled.div`
