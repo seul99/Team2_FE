@@ -15,39 +15,46 @@ export const Container = styled.div`
 export const ContentArea = styled.div`
   padding: 50px;
   flex: 1;
+  overflow-y: auto;
+  padding-bottom: 0px;
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const IntroWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  height: 100%; /* 부모(ContentArea)의 공간을 꽉 채움 */
 `;
 
 // --- 상단 컨텐츠 (인사말, 이미지, 카드) ---
 
 export const GreetingText = styled.h1`
   color: #000;
+
   text-align: center;
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
 `;
 
 export const ImageOverlapContainer = styled.div`
   position: relative;
   width: 230px;
-  height: 230px;
+  height: 200px;
+  margin-top: 20px;
   display: flex; /* 내부 아이템 중앙 정렬용 */
   justify-content: center;
   align-items: center;
-`;
-
-export const PinkCircleImage = styled.img`
-  width: 393px; /* ImageOverlapContainer에 꽉 채움 */
-  height: 852px; /* ImageOverlapContainer에 꽉 채움 */
-
-  postion: absolute; /* CharacterImage에 겹쳐지게 */
-  object-fit: contain; /* 비율 유지 */
-  z-index: 1; /* 강아지 이미지보다 아래 */
 `;
 
 export const CharacterImage = styled.img`
@@ -55,20 +62,21 @@ export const CharacterImage = styled.img`
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%); /* 정확히 중앙에 배치 */
-  width: 210px; /* 강아지 이미지 크기 */
-  height: 210px; /* 강아지 이미지 크기 */
+  width: 250px; /* 강아지 이미지 크기 */
+  height: 250px; /* 강아지 이미지 크기 */
   object-fit: contain;
-  z-index: 2; /* 핑크색 원 이미지보다 위 */
 `;
 
 export const CtaText = styled.h2`
   color: #000;
   text-align: center;
   font-family: Pretendard;
+
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: 137.236%; /* 24.703px */
+  margin-top: 10px;
 `;
 
 export const SectionWrapper = styled.div`
@@ -95,7 +103,7 @@ export const SectionTitle = styled.h3`
   font-style: normal;
   font-weight: 400;
   line-height: 137.236%; /* 17.841px */
-  margin-top: 67px;
+  margin-top: 100px;
   margin-left: 12px;
 `;
 
@@ -112,7 +120,6 @@ export const FaqCard = styled.div`
   padding: 14px;
   background: rgba(255, 248, 207, 0.9);
   box-shadow: 1px 2px 7.8px 1px rgba(0, 0, 0, 0.25);
-  z-index: 10;
   color: #000;
   font-family: Poppins;
   font-size: 10px;
@@ -135,7 +142,6 @@ export const AiCard = styled.div`
   padding: 14px;
   background: rgba(255, 248, 207, 0.9);
   box-shadow: 1px 2px 7.8px 1px rgba(0, 0, 0, 0.25);
-  z-index: 10;
   color: #000;
   font-family: Poppins;
   font-size: 10px;
@@ -158,7 +164,6 @@ export const Button = styled.button`
   box-shadow: 0 0 0 1px #fbe5e9;
   background: #fff;
 
-  z-index: 10;
   color: #000;
   text-align: center;
   font-family: Pretendard;

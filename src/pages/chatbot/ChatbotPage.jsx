@@ -1,40 +1,83 @@
 import React, { useState } from "react";
 import * as C from "../../styles/StyledChat";
-import pinkCircle from "/images/chatbot/pink-circle.png";
 import chatbotCharacter from "/images/chatbot/boni-character.png";
 import search from "/images/chatbot/search.png";
 import mic from "/images/chatbot/mic.png";
 import sparkleIcon from "/images/chatbot/sparkle-icon.png";
+import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function ChatbotPage() {
   const nickname = localStorage.getItem("nickname") || "ME";
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [isChatStarted, setIsChatStarted] = useState(false);
 
-  const BOT_DUMMY_REPLY =
-    "네, 보호소 방문 가능합니다! 입양 전에는 해당 보호소의 전화 연결 버튼을 눌러 상담";
+  // const BOT_DUMMY_REPLY =
+  //   "네, 보호소 방문 가능합니다! 입양 전에는 해당 보호소의 전화 연결 버튼을 눌러 상담";
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = inputValue.trim();
     if (text === "") return;
 
     const newUserMessage = {
-      id: messages.length + 1,
+      id: Date.now(),
       sender: "user",
       text: text,
     };
 
-    const botReply = {
-      id: messages.length + 2,
-      sender: "bot",
-      text: BOT_DUMMY_REPLY,
-    };
-
-    setMessages((prevMessages) => [...prevMessages, newUserMessage, botReply]);
-
+    // 기존 메시지에 사용자 메시지 추가
+    setMessages((prev) => [...prev, newUserMessage]);
     setIsChatStarted(true);
     setInputValue("");
+
+    try {
+      // 저장된 토큰 가져오기
+      const accessToken = localStorage.getItem("access");
+      console.log("현재 토큰 값:", accessToken);
+      // API 요청
+      const res = await axios.post(
+        `${API_BASE_URL}/api/rag/query`,
+        {
+          query: text,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // 토큰을 헤더에 포함해서 인증
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Chat Response:", res.data);
+
+      const botResponseText = res.data.data.answer;
+
+      const botReply = {
+        id: Date.now() + 1,
+        sender: "bot",
+        text: botResponseText,
+      };
+
+      // 봇 응답 메시지도 추가
+      setMessages((prev) => [...prev, botReply]);
+    } catch (error) {
+      console.error("API 에러 발생했습니다 ㅠㅠ: ", error);
+
+      // 에러 메시지 표시
+      const errorMessage = {
+        id: Date.now() + 2,
+        sender: "bot",
+        text: "죄송합니다. 답변을 가져오는데 오류가 발생했습니다... 다시 시도 해주세요.😭",
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false); // 로딩 끝
+    }
+    console.log(messages);
   };
 
   return (
@@ -61,11 +104,10 @@ export default function ChatbotPage() {
             ))}
           </C.MessageList>
         ) : (
-          <>
+          <C.IntroWrapper>
             <C.GreetingText>안녕하세요, {nickname}님</C.GreetingText>
 
             <C.ImageOverlapContainer>
-              <C.PinkCircleImage src={pinkCircle} alt="핑크색 원 배경" />
               <C.CharacterImage src={chatbotCharacter} alt="챗봇 캐릭터 보니" />
             </C.ImageOverlapContainer>
             <C.CtaText>
@@ -97,7 +139,7 @@ export default function ChatbotPage() {
                 </C.AiCard>
               </C.Section>
             </C.SectionWrapper>
-          </>
+          </C.IntroWrapper>
         )}
       </C.ContentArea>
 
