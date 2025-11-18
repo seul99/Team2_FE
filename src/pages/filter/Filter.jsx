@@ -3,24 +3,9 @@ import * as F from "../../styles/StyledFilter";
 import Select from "react-select";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
-
-// import axios from "axios";
-
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-const regionData = {
-  Seoul: ["강남구", "마포구", "서초구"],
-  Suwon: ["장안구", "팔달구", "영통구"],
-  Pusan: ["해운대구", "수영구", "중구"],
-};
+import API from "../../api/axiosInstance";
 
 const filterConfig = {
-  area: [
-    { value: "all", label: "전체" },
-    { value: "Seoul", label: "서울특별시" },
-    { value: "Suwon", label: "수원" },
-    { value: "Pusan", label: "부산" },
-  ],
   type: [
     { value: "all", label: "전체" },
     { value: "dog", label: "개" },
@@ -37,27 +22,29 @@ const filterConfig = {
     { value: "no", label: "중성화 안 함" },
   ],
 };
+
 const commonFilterList = [
   { key: "type", title: "축종 설정" },
   { key: "sex", title: "성별 설정" },
   { key: "neuter", title: "중성화" },
 ];
-const Filter = () => {
+
+const Filter = ({ onSearch }) => {
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState({
-    area: filterConfig.area[0],
+    area: null,
     city: null,
     type: filterConfig.type[0],
     sex: filterConfig.sex[0],
     neuter: filterConfig.neuter[0],
   });
 
-  const [cities, setCities] = useState([]);
+  const [provinceOptions, setProvinceOptions] = useState([]);
+  const [cityOptions, setCityOptions] = useState([]);
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
   const [checked, setChecked] = useState(false);
 
   // 기본 날짜: 오늘 ~ 한 달 뒤
@@ -73,14 +60,55 @@ const Filter = () => {
     setEndDate(end);
   }, []);
 
-  // 지역 변경 시 시/군/구 옵션 세팅
-  const handleAreaChange = (v) => {
+  useEffect(() => {
+    const fetchProvinces = async () => {
+      try {
+        const res = await API.get("/api/animals/provinces");
+
+        const list = res.data?.data || [];
+
+        setProvinceOptions(
+          list.map((p) => ({
+            value: p,
+            label: p,
+          }))
+        );
+      } catch (err) {
+        console.error("❌ 시/도 목록 조회 실패:", err);
+      }
+    };
+
+    fetchProvinces();
+  }, []);
+
+  const handleAreaChange = async (v) => {
     setSelected((prev) => ({
       ...prev,
       area: v,
       city: null,
     }));
-    setCities(regionData[v.value] || []);
+
+    if (!v?.value) {
+      setCityOptions([]);
+      return;
+    }
+
+    try {
+      const res = await API.get("/api/animals/cities", {
+        params: { province: v.value },
+      });
+
+      const list = res.data?.data || [];
+
+      setCityOptions(
+        list.map((c) => ({
+          value: c,
+          label: c,
+        }))
+      );
+    } catch (err) {
+      console.error(" 시/군/구 목록 조회 실패:", err);
+    }
   };
 
   const handleCityChange = (v) => {
@@ -99,40 +127,6 @@ const Filter = () => {
         ...selected,
       },
     });
-
-    //    navigate("/SearchPage", {
-    //   state: {
-    //     startDate: startDate.replace(/-/g, ""), // yyyy-MM-dd → yyyyMMdd
-    //     endDate: endDate.replace(/-/g, ""),
-
-    //     province: selected.area?.label || null,
-    //     city: selected.city?.label || null,
-
-    //     animalType:
-    //       selected.type?.value === "dog"
-    //         ? "DOG"
-    //         : selected.type?.value === "cat"
-    //         ? "CAT"
-    //         : null,
-
-    //     sex:
-    //       selected.sex?.label === "암컷"
-    //         ? "FEMALE"
-    //         : selected.sex?.label === "수컷"
-    //         ? "MALE"
-    //         : "UNKNOWN",
-
-    //     neuterStatus:
-    //       selected.neuter?.label === "중성화"
-    //         ? "YES"
-    //         : selected.neuter?.label === "중성화 안 함"
-    //         ? "NO"
-    //         : "UNKNOWN",
-
-    //     onlyProtecting: checked,
-    //     isLatest: true,
-    //   },
-    // });
   };
 
   return (
@@ -167,16 +161,17 @@ const Filter = () => {
             <F.SelectWrap>
               <F.StyledSelect
                 classNamePrefix="react-select"
-                options={filterConfig.area.filter((op) => op.value !== "all")}
-                placeholder="시/도"
+                options={provinceOptions}
+                placeholder="시/도 선택"
                 onChange={handleAreaChange}
+                value={selected.area}
               />
 
               <F.StyledSelect
                 classNamePrefix="react-select"
                 placeholder="시/군/구"
-                isDisabled={!selected.area || selected.area.value === "all"}
-                options={cities.map((c) => ({ value: c, label: c }))}
+                isDisabled={!selected.area}
+                options={cityOptions}
                 onChange={handleCityChange}
                 value={selected.city}
               />

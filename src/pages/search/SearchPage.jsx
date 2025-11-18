@@ -1,123 +1,148 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as S from "../../styles/StyledSearch";
 import BottomCard from "../main/Component/BottomCard";
 import { useLocation } from "react-router-dom";
-import { mock } from "../main/Component/mockData";
-// import axios from "axios";
-
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// import { mock } from "../main/Component/mockData";
+import API from "../../api/axiosInstance";
 
 const SearchPage = () => {
   const { state } = useLocation();
-  // const [data, setData] = useState([]);
-  // const [totalPages, setTotalPages] = useState(0);
-
-  // // 페이징
-  // const [page, setPage] = useState(0);
-  // const size = 20;
-  // const fetchAnimals = async () => {
-  //     try {
-  //       const res = await axios.get(`${API_BASE_URL}/api/animals`, {
-  //         params: {
-  //           startDate: state.startDate || null,
-  //           endDate: state.endDate || null,
-  //           province: state.province || null,
-  //           city: state.city || null,
-  //           animalType: state.animalType || null,
-  //           sex: state.sex || null,
-  //           neuterStatus: state.neuterStatus || null,
-  //           onlyProtecting: state.onlyProtecting,
-  //           isLatest: state.isLatest,
-
-  //           page,
-  //           size,
-  //           sort: "foundDate,desc",
-  //         },
-  //       });
-
-  //       setData(res.data.data.content);
-  //       setTotalPages(res.data.data.totalPages);
-  //     } catch (e) {
-  //       console.log("검색 실패:", e);
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     fetchAnimals();
-  //   }, [page]);
 
   const { startDate, endDate, checked, area, city, type, sex, neuter } =
     state || {};
 
-  const filteredData = mock.filter((item) => {
-    console.log("---- CHECKING ITEM ----");
-    console.log("province:", item.province);
-    console.log("city:", item.city);
-    console.log("type:", item.animalTypeName);
-    console.log("sex:", item.sex);
-    console.log("neuter:", item.neuterStatus);
-    console.log("status:", item.status);
-    console.log(
-      "start:",
-      item.noticeStartDate,
-      ">= ",
-      startDate?.replace(/-/g, "")
-    );
-    console.log("end:", item.noticeEndDate, "<= ", endDate?.replace(/-/g, ""));
-    // 지역 조건
-    const matchProvince =
-      area?.value && area.value !== "all"
-        ? item.province.includes(area.label)
-        : true;
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const matchCity =
-      city?.value && area?.value !== "all"
-        ? item.city.includes(city.label)
-        : true;
+  // const filteredData = mock.filter((item) => {
+  //   console.log("---- CHECKING ITEM ----");
+  //   console.log("province:", item.province);
+  //   console.log("city:", item.city);
+  //   console.log("type:", item.animalTypeName);
+  //   console.log("sex:", item.sex);
+  //   console.log("neuter:", item.neuterStatus);
+  //   console.log("status:", item.status);
+  //   console.log(
+  //     "start:",
+  //     item.noticeStartDate,
+  //     ">= ",
+  //     startDate?.replace(/-/g, "")
+  //   );
+  //   console.log("end:", item.noticeEndDate, "<= ", endDate?.replace(/-/g, ""));
+  //   // 지역 조건
+  //   const matchProvince =
+  //     area?.value && area.value !== "all"
+  //       ? item.province.includes(area.label)
+  //       : true;
 
-    // 축종
-    const matchType =
-      type?.value !== "all" ? item.animalTypeName === type.label : true;
+  //   const matchCity =
+  //     city?.value && area?.value !== "all"
+  //       ? item.city.includes(city.label)
+  //       : true;
 
-    // 성별
-    const matchSex = sex?.value !== "all" ? item.sex === sex.label : true;
+  //   // 축종
+  //   const matchType =
+  //     type?.value !== "all" ? item.animalTypeName === type.label : true;
 
-    // 중성화
-    const matchNeuter =
-      neuter?.value !== "all" ? item.neuterStatus.includes(neuter.label) : true;
+  //   // 성별
+  //   const matchSex = sex?.value !== "all" ? item.sex === sex.label : true;
 
-    // 보호중
-    const matchProtection = checked ? item.status === "보호중" : true;
+  //   // 중성화
+  //   const matchNeuter =
+  //     neuter?.value !== "all" ? item.neuterStatus.includes(neuter.label) : true;
 
-    // 날짜 범위
-    const start = startDate?.replace(/-/g, "");
-    const end = endDate?.replace(/-/g, "");
+  //   // 보호중
+  //   const matchProtection = checked ? item.status === "보호중" : true;
 
-    const matchStart = start ? item.noticeStartDate >= start : true;
-    const matchEnd = end ? item.noticeEndDate <= end : true;
+  //   // 날짜 범위
+  //   const start = startDate?.replace(/-/g, "");
+  //   const end = endDate?.replace(/-/g, "");
 
-    return (
-      matchProvince &&
-      matchCity &&
-      matchType &&
-      matchSex &&
-      matchNeuter &&
-      matchProtection &&
-      matchStart &&
-      matchEnd
-    );
-  });
+  //   const matchStart = start ? item.noticeStartDate >= start : true;
+  //   const matchEnd = end ? item.noticeEndDate <= end : true;
 
-  console.log("STATE:", state);
-  console.log("MOCK:", mock);
-  console.log("FILTERED:", filteredData);
+  //   return (
+  //     matchProvince &&
+  //     matchCity &&
+  //     matchType &&
+  //     matchSex &&
+  //     matchNeuter &&
+  //     matchProtection &&
+  //     matchStart &&
+  //     matchEnd
+  //   );
+  // });
+
+  // console.log("STATE:", state);
+  // console.log("MOCK:", mock);
+  // console.log("FILTERED:", filteredData);
+
+  useEffect(() => {
+    const fetchAnimals = async () => {
+      try {
+        const res = await API.get("/api/animals", {
+          params: {
+            // 날짜 yyyy-MM-dd → yyyyMMdd
+            startDate: startDate?.replace(/-/g, ""),
+            endDate: endDate?.replace(/-/g, ""),
+
+            // 지역
+            province: area?.label || null,
+            city: city?.label || null,
+
+            // 축종
+            animalType:
+              type?.value === "dog"
+                ? "DOG"
+                : type?.value === "cat"
+                ? "CAT"
+                : null,
+
+            // 성별
+            sex:
+              sex?.label === "암컷"
+                ? "FEMALE"
+                : sex?.label === "수컷"
+                ? "MALE"
+                : null,
+
+            // 중성화
+            neuterStatus:
+              neuter?.label === "중성화"
+                ? "YES"
+                : neuter?.label === "중성화 안 함"
+                ? "NO"
+                : null,
+
+            // 보호중만
+            onlyProtecting: checked || false,
+
+            // 최신순
+            isLatest: true,
+          },
+        });
+
+        setData(res.data.data.content);
+      } catch (err) {
+        console.error("검색 결과 조회 실패:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnimals();
+  }, [startDate, endDate, area, city, type, sex, neuter, checked]);
+
+  if (loading) return <div>로딩중...</div>;
 
   return (
     <S.Container>
       <S.Box>
-        {filteredData.map((item) => (
-          <BottomCard key={item.desertionNo} item={item} />
-        ))}
+        {data.length === 0 ? (
+          <div>검색 결과가 없습니다.</div>
+        ) : (
+          data.map((item) => <BottomCard key={item.desertionNo} item={item} />)
+        )}
       </S.Box>
     </S.Container>
   );

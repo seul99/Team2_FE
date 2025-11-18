@@ -17,13 +17,11 @@ const BottomCard = ({ item }) => {
           }
           alt={item.breedName}
         />
-        <B.Code>
-          보호번호 <br />
-          {item.desertionNo}
-        </B.Code>
+        <B.Code>보호번호 {item.desertionNo}</B.Code>
         <B.Info>
-          {item.breedName} {item.age} {item.sex}
+          {item.breedName} {item.age}
         </B.Info>
+        <B.Info>{item.sex}</B.Info>
       </B.Box>
     </B.Container>
   );

@@ -42,7 +42,7 @@ const DetailText = styled.div`
   font-weight: 400;
   line-height: 150%; /* 18px */
   letter-spacing: 0.2px;
-  margin-right: 45%;
+  margin-right: 40%;
 `;
 const Text = styled.div`
   color: #000;
