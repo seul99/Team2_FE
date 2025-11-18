@@ -75,7 +75,6 @@ const Layout = () => {
     "/MainPage",
     "/SavePage",
     "/SearchPage",
-    "/ChatbotPage",
     "/Shelter",
     "/AnimalList",
   ];
