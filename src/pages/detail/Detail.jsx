@@ -161,7 +161,7 @@ const Detail = () => {
               <D.SlideBox open={openHealth}>
                 <D.Text>건강정보 : {data.healthInfo}</D.Text>
                 <D.Text>백신접종 : {data.vaccination}</D.Text>
-                <D.Text>질병여부 : {data.vaccination}</D.Text> <br /> <br />{" "}
+                <D.Text>질병여부 : {data.healthCheck}</D.Text> <br /> <br />{" "}
                 <br />
                 <D.Text>*자세한 내용은 보호소로 전화문의 부탁드립니다.</D.Text>
               </D.SlideBox>
