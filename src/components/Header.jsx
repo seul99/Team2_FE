@@ -99,6 +99,7 @@ const Header = ({ type }) => {
         {isFilterPage && <DetailText>상세페이지</DetailText>}
         {isAnimalPage && <Text>유기동물 리스트 조회</Text>}
         {isSavePage && <SaveText>저장 목록</SaveText>}
+        {/* <isAIRecommPage && <Text>AI 추천 목록</Text> } */}
       </Box>
     </Container>
   );
