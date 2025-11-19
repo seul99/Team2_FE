@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import * as D from "../../styles/StyledDetail";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { useNavigate } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -14,7 +13,6 @@ const Detail = () => {
 
   // 사진 크게 확대하기
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedImg, setSelectedImg] = useState(null);
 
   // 슬라이드 정보 표시
   const [openHealth, setOpenHealth] = useState(false);
@@ -23,8 +21,8 @@ const Detail = () => {
   // 찜하기
   const [isLiked, setIsLiked] = useState(false);
 
-  // API연결 코드, import, item 지우기
-  const [data, setData] = useState(null); // 상세 데이터 저장
+  // 상세 데이터 & 로딩
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // 사진 여러장 넘기기
@@ -32,13 +30,14 @@ const Detail = () => {
     ? [...new Set(data.images.filter((img) => img && img.trim() !== ""))]
     : [];
 
-  // 북마크기능
+  // 북마크 기능용 userId
   const userId = localStorage.getItem("userId");
+
   useEffect(() => {
     console.log("받은 이미지 데이터:", data?.images);
   }, [data]);
 
-  //  api연결
+  // 상세 조회
   useEffect(() => {
     const fetchDetail = async () => {
       const startTime = Date.now();
@@ -48,27 +47,46 @@ const Detail = () => {
       } catch (err) {
         console.error("Detail API Error:", err);
       } finally {
-        const elapsed = Date.now() - startTime; // 실제 요청 걸린 시간
-        const minTime = 400; // 최소 유지 시간 2초
+        const elapsed = Date.now() - startTime;
+        const minTime = 400; // 최소 로딩 표시 시간(ms)
         const delay = Math.max(0, minTime - elapsed);
 
         setTimeout(() => {
-          setLoading(false); // 2초 유지 후 로딩 끝!
+          setLoading(false);
         }, delay);
       }
     };
+
     fetchDetail();
   }, [desertionNo]);
 
-  // 북마크 기능
+  // 페이지 방문 관심 로그 전송
+  useEffect(() => {
+    if (!desertionNo || !userId) return;
+
+    const sendInterest = async () => {
+      try {
+        await API.post(`/api/admin/user-interests/${userId}`, {
+          desertionNo,
+          dwellTimeSeconds: 25,
+        });
+        console.log("관심 로그 전송 완료");
+      } catch (err) {
+        console.error("관심 로그 전송 실패:", err);
+      }
+    };
+
+    sendInterest();
+  }, [desertionNo, userId]);
+
+  // 북마크 초기 상태 조회
   useEffect(() => {
     const fetchUserLike = async () => {
       if (!userId) return;
 
       try {
         const res = await API.get(`/api/admin/user-likes/${userId}`);
-        const likedList = res.data.data;
-
+        const likedList = res.data.data; // ["12345", ...]
         setIsLiked(likedList.includes(String(desertionNo)));
       } catch (err) {
         console.error("UserLike GET Error:", err);
@@ -97,29 +115,25 @@ const Detail = () => {
             <D.LikeBtn
               src={
                 isLiked
-                  ? "/images/components/likeBtnFill.svg" // 꽉 찬 하트
-                  : "/images/components/LikeBtn.svg" // 빈 하트
+                  ? "/images/components/likeBtnFill.svg"
+                  : "/images/components/LikeBtn.svg"
               }
               alt="likeBtn"
               onClick={async () => {
                 try {
-                  const res = await API.post(
-                    `/api/admin/user-likes/${userId}`,
-                    {
-                      desertionNo: data.desertionNo,
-                      liked: !isLiked, // true → 북마크 / false → 취소
-                    }
-                  );
-
-                  setIsLiked(!isLiked); // FE 표시 업데이트
+                  await API.post(`/api/admin/user-likes/${userId}`, {
+                    desertionNo: data.desertionNo,
+                    liked: !isLiked, // true → 북마크 / false → 취소
+                  });
+                  setIsLiked(!isLiked);
                 } catch (err) {
                   console.error("POST Like Error:", err);
                 }
               }}
             />
           </D.Header>
-          {/* 이미지 */}
 
+          {/* 메인 이미지 */}
           {images.length === 1 ? (
             <D.MainImg
               src={images[0]}
@@ -139,7 +153,8 @@ const Detail = () => {
               ))}
             </Swiper>
           )}
-          {/* 모달창 */}
+
+          {/* 이미지 모달 */}
           {isOpen && (
             <D.ModalOverlay onClick={() => setIsOpen(false)}>
               <Swiper slidesPerView={1} pagination={{ clickable: true }}>
@@ -151,7 +166,8 @@ const Detail = () => {
               </Swiper>
             </D.ModalOverlay>
           )}
-          {/* 기본정보 표시 */}
+
+          {/* 상세 정보 */}
           <D.DetailBox>
             <D.BagicInfo>
               <D.DesertionNo>보호번호 {data.desertionNo}</D.DesertionNo>
@@ -164,7 +180,7 @@ const Detail = () => {
                   {data.animalTypeName === "개" ? "🐕" : "🐈"} {data.breedName}
                 </D.BoxInfo>
                 <D.BoxInfo>🌿 {data.neuterStatus}</D.BoxInfo>
-                <D.BoxInfo>🛡️ {data.status}</D.BoxInfo> {/* 보호중 상태 표시?*/}
+                <D.BoxInfo>🛡️ {data.status}</D.BoxInfo>
               </D.CheckList>
             </D.BagicInfo>
 
@@ -181,7 +197,9 @@ const Detail = () => {
                 <D.SlideBox open={openHealth}>
                   <D.Text>건강정보 : {data.healthInfo}</D.Text>
                   <D.Text>백신접종 : {data.vaccination}</D.Text>
-                  <D.Text>질병여부 : {data.healthCheck}</D.Text> <br /> <br />{" "}
+                  <D.Text>질병여부 : {data.healthCheck}</D.Text>
+                  <br />
+                  <br />
                   <br />
                   <D.Text>
                     *자세한 내용은 보호소로 전화문의 부탁드립니다.
@@ -190,13 +208,13 @@ const Detail = () => {
               </D.SlideWrap>
 
               {/* 성격 메모 */}
-
               <D.SlideWrap open={openMemo} type="memo">
                 <D.BtnBox
                   open={openMemo}
                   onClick={() => setOpenMemo(!openMemo)}
                 >
-                  💕 성격 메모 <img src="../images/components/rightBtn.svg" />
+                  💕 성격 메모{" "}
+                  <img src="../images/components/rightBtn.svg" />
                 </D.BtnBox>
                 <D.SlideBox open={openMemo}>
                   {data.personality ? (

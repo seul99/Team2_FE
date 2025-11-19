@@ -31,6 +31,7 @@ export default function OidcCallback() {
 
           localStorage.setItem("access", res.data.data.accessToken);
           localStorage.setItem("refresh", res.data.data.refreshToken);
+          localStorage.getItem("userId", res.data.data.userId);
           localStorage.setItem("nickname", res.data.data.nickname);
           localStorage.setItem("userId", res.data.data.userId);
           alert("로그인 성공! 😊");

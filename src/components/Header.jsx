@@ -36,6 +36,17 @@ const CenterText = styled.div`
   line-height: 150%;
 `;
 
+const AIText = styled.div`
+  color: #000;
+  text-align: center;
+  font-feature-settings: "liga" off, "clig" off;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  margin-left: 35%;
+`;
+
 const Header = ({ type }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,6 +54,7 @@ const Header = ({ type }) => {
   const isFilterPage = location.pathname.startsWith("/Filter");
   const isAnimalPage = location.pathname.startsWith("/AnimalList");
   const isSavePage = location.pathname.startsWith("/SavePage");
+  const isAIRecommList = location.pathname.startsWith("/AIRecommList");
   const isSearchPage = location.pathname.startsWith("/SearchPage");
 
   return (
@@ -67,6 +79,7 @@ const Header = ({ type }) => {
         {isFilterPage && <CenterText>상세페이지</CenterText>}
         {isAnimalPage && <CenterText>유기동물 리스트 조회</CenterText>}
         {isSavePage && <CenterText>저장 목록</CenterText>}
+         {isAIRecommList && <AIText>AI 추천 목록</AIText>}
         {isSearchPage && <CenterText>검색 결과</CenterText>}
       </Box>
     </Container>

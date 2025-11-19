@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as C from "../../styles/StyledChat";
 import chatbotCharacter from "/images/chatbot/boni-character.png";
 import search from "/images/chatbot/search.png";
@@ -9,6 +10,7 @@ import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function ChatbotPage() {
+  const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname") || "ME";
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -80,6 +82,10 @@ export default function ChatbotPage() {
     console.log(messages);
   };
 
+  const handleRecommendClick = () => {
+    navigate("/RecommPage");
+  };
+
   return (
     <C.Container>
       <C.ContentArea>
@@ -120,22 +126,19 @@ export default function ChatbotPage() {
                 <C.SectionTitle>자주 묻는 질문</C.SectionTitle>
                 <C.FaqCard>
                   <span>🐾 유기동물 입양 절차 알려줘!</span>
-                  <C.Button>채팅하러 가기</C.Button>
                 </C.FaqCard>
                 <C.FaqCard>
                   <span>🐾 입양 전 방문이 가능한가요?</span>
-                  <C.Button>채팅하러 가기</C.Button>
                 </C.FaqCard>
               </C.Section>
               <C.Section>
                 <C.SectionTitle>AI 기반 유기동물 추천</C.SectionTitle>
-                <C.AiCard>
+                <C.AiCard onClick={handleRecommendClick}>
                   <span>
                     🔍 행동 기반 추천 AI를 이용해
                     <br />
                     {nickname}님에게 꼭 맞는 반려동물을 만나보세요!
                   </span>
-                  <C.Button>추천 받으러 가기</C.Button>
                 </C.AiCard>
               </C.Section>
             </C.SectionWrapper>
