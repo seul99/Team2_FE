@@ -53,39 +53,43 @@ const Detail = () => {
     fetchDetail();
   }, [desertionNo]);
 
-  // interest(체류 시간)기록 추가, 테스트 목적
-  useEffect(()=> {
+  // URL 파라미터로 받은 desertionNo 기준으로 관심 로그 전송
+  useEffect(() => {
+    if (!desertionNo || !userId) return;
+    if (!desertionNo) return;
+
     const sendInterest = async () => {
       try {
-        await API.post("/api/animals/interests", {
-          desertionNo: data.desertionNo,
-          dwellTimeSeconds: 0, // 백엔드가 일단은 0으로 전달하라 했음
+        await API.post(`/api/admin/user-interests/${userId}`, {
+          desertionNo: desertionNo,
+          dwellTimeSeconds: 25,
         });
         console.log("관심 로그 전송 완료");
       } catch (err) {
         console.error("관심 로그 전송 실패:", err);
       }
     };
+
     sendInterest();
-  }, [data?.desertionNo]);
+  }, [desertionNo, userId]);
 
   // 실제 체류를 기록하는 함수
-//   useEffect(() => {
-//   if (!data) return;
+  //   useEffect(() => {
+  //   if (!data) return;
 
-//   const start = Date.now();
+  //   const start = Date.now();
 
-//   return () => {
-//     const dwellTimeSeconds = Math.round((Date.now() - start) / 1000);
+  //   return () => {
+  //     const dwellTimeSeconds = Math.round((Date.now() - start) / 1000);
 
-//     API.post("/api/animals/interests", {
-//       desertionNo: data.desertionNo,
-//       dwellTimeSeconds,
-//     }).catch((err) => {
-//       console.error("관심 로그 전송 실패:", err);
-//     });
-//   };
-// }, [data?.desertionNo]);
+  //     API.post("/api/animals/interests", {
+  //       desertionNo: data.desertionNo,
+  //       dwellTimeSeconds,
+  //     }).catch((err) => {
+  //       console.error("관심 로그 전송 실패:", err);
+  //     });
+  //   };
+  // }, [data?.desertionNo]);
 
   // 북마크 기능
   useEffect(() => {
@@ -125,7 +129,7 @@ const Detail = () => {
             }
             alt="likeBtn"
             onClick={async () => {
-              try {
+              try { 
                 const res = await API.post(`/api/admin/user-likes/${userId}`, {
                   desertionNo: data.desertionNo,
                   liked: !isLiked, // true → 북마크 / false → 취소
