@@ -53,7 +53,6 @@ const NavigationBar = () => {
             </N.NavItem>
           );
         })}
-        ;
       </N.NavBar>
     </N.NavContainer>
   );
