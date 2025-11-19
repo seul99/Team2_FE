@@ -72,10 +72,19 @@ const NavigationBar = () => {
       icon: "/images/common/homeIcon.png",
     },
     {
+      path: "/RecommPage",
+      label: "저장",
+      icon: "",
+
+    },
+    {
       path: "/SavePage",
       label: "저장",
       icon: "/images/common/heartIcon.png",
     },
+    {
+      path: "/MyPage"
+    }
   ];
 
   return (
