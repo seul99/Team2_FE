@@ -14,6 +14,7 @@ import AIRecommList from "./pages/recommendation/AIRecommList";
 import Filter from "./pages/filter/Filter";
 import Shelter from "./pages/detail/Shelter";
 import AnimalList from "./pages/save/AnimalList";
+import MyPage from "./pages/my/MyPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/Shelter" element={<Shelter />} />
           <Route path="/AnimalList" element={<AnimalList />} />
           <Route path="/oidc-callback" element={<OidcCallback />} />
+          <Route path="/MyPage" element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
