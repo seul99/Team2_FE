@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
-import { saveFavorite } from "../utils/favorites";
 
 const Container = styled.div``;
 const Box = styled.div`

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as D from "../../styles/StyledDetail";
-// import { mock } from "../main/Component/mockData";
+
 import { useNavigate } from "react-router-dom";
-import { saveFavorite } from "../../utils/favorites";
-import { removeFavorite } from "../../utils/favorites";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import API from "../../api/axiosInstance";
@@ -33,6 +32,8 @@ const Detail = () => {
     ? [...new Set(data.images.filter((img) => img && img.trim() !== ""))]
     : [];
 
+  // 북마크기능
+  const userId = localStorage.getItem("userId");
   useEffect(() => {
     console.log("받은 이미지 데이터:", data?.images);
   }, [data]);
@@ -52,22 +53,23 @@ const Detail = () => {
     fetchDetail();
   }, [desertionNo]);
 
-  // 찜하기
+  // 북마크 기능
   useEffect(() => {
-    if (!data) return;
-    const saved = JSON.parse(localStorage.getItem("favoriteAnimals")) || [];
-    const exists = saved.some((v) => v.desertionNo === data.desertionNo);
-    setIsLiked(exists);
-  }, [data]);
+    const fetchUserLike = async () => {
+      if (!userId) return;
 
-  // 사진 넘기기
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
+      try {
+        const res = await API.get(`/api/admin/user-likes/${userId}`);
+        const likedList = res.data.data; // ["12345", "77777", ...] 구조번호 배열
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+        setIsLiked(likedList.includes(String(desertionNo)));
+      } catch (err) {
+        console.error("UserLike GET Error:", err);
+      }
+    };
+
+    fetchUserLike();
+  }, [userId, desertionNo]);
 
   if (loading) return <div>로딩중</div>;
   if (!data) return <div>데이터가 없음</div>;
@@ -88,13 +90,17 @@ const Detail = () => {
                 : "/images/components/LikeBtn.svg" // 빈 하트
             }
             alt="likeBtn"
-            onClick={() => {
-              if (isLiked) {
-                removeFavorite(data.desertionNo);
-              } else {
-                saveFavorite(data);
+            onClick={async () => {
+              try {
+                const res = await API.post(`/api/admin/user-likes/${userId}`, {
+                  desertionNo: data.desertionNo,
+                  liked: !isLiked, // true → 북마크 / false → 취소
+                });
+
+                setIsLiked(!isLiked); // FE 표시 업데이트
+              } catch (err) {
+                console.error("POST Like Error:", err);
               }
-              setIsLiked(!isLiked);
             }}
           />
         </D.Header>

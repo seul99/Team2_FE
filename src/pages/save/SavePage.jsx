@@ -3,16 +3,38 @@ import React, { useEffect, useState } from "react";
 import * as S from "../../styles/StyledSave";
 import { useLocation, useNavigate } from "react-router-dom";
 import BottomCard from "../main/Component/BottomCard";
-import { getFavorites } from "../../utils/favorites";
+// import { getFavorites } from "../../utils/favorites";
+import API from "../../api/axiosInstance";
 
 const SavePage = () => {
   const [list, setList] = useState([]);
   const navigate = useNavigate();
-  const location = useLocation();
-
+  // const location = useLocation();
+  const userId = localStorage.getItem("userId");
   useEffect(() => {
-    setList(getFavorites());
-  }, [location]);
+    if (!userId) return;
+
+    const fetch = async () => {
+      try {
+        const res = await API.get(`/api/admin/user-likes/${userId}`);
+        // res.data.data = ["12345", "99999"] 구조번호 배열
+        const desertionList = res.data.data;
+
+        // 각 구조번호마다 동물 상세 불러오기
+        const animalPromises = desertionList.map((no) =>
+          API.get(`/api/animals/${no}`)
+        );
+
+        const results = await Promise.all(animalPromises);
+        setList(results.map((r) => r.data.data));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetch();
+  }, [userId]);
+
   return (
     <S.Container>
       <S.Box $hasItems={list.length > 0}>

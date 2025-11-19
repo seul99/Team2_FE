@@ -4,7 +4,7 @@ import * as M from "../../styles/StyledMain";
 import TopCardList from "./Component/TopCardList";
 import BottomCard from "./Component/BottomCard";
 import { useNavigate } from "react-router-dom";
-// import { mock } from "./Component/mockData.js";
+
 import API from "../../api/axiosInstance";
 
 const MainPage = () => {
@@ -12,6 +12,17 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const [bottomList, setBottomList] = useState([]);
+  const [userLikes, setUserLikes] = useState([]);
+
+  useEffect(() => {
+    const fetchUserLikes = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+      const res = await API.get(`/api/admin/user-likes/${userId}`);
+      setUserLikes(res.data.data);
+    };
+    fetchUserLikes();
+  }, []);
 
   useEffect(() => {
     const fetchBottomList = async () => {
@@ -39,15 +50,6 @@ const MainPage = () => {
     { key: "cat", label: "고양이" },
   ];
 
-  // const filterData =
-  //   selectedTab === "all"
-  //     ? data
-  //     : data.filter((item) =>
-  //         selectedTab === "dog"
-  //           ? item.animalTypeName === "개"
-  //           : item.animalTypeName === "고양이"
-  //       );
-
   const filterData =
     selectedTab === "all"
       ? bottomList
@@ -60,7 +62,7 @@ const MainPage = () => {
   return (
     <M.Container>
       <M.Box>
-        <TopCardList />
+        <TopCardList userLikes={userLikes} />
         {/* 탭바 */}
         <M.TapBar>
           {tabList.map((tab) => {
@@ -78,7 +80,11 @@ const MainPage = () => {
         {/* 무한스크롤 카드 */}
         <M.BottomBox>
           {filterData.map((item) => (
-            <BottomCard key={item.desertionNo} item={item} />
+            <BottomCard
+              key={item.desertionNo}
+              item={item}
+              userLikes={userLikes}
+            />
           ))}
         </M.BottomBox>
       </M.Box>
