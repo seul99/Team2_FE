@@ -16,22 +16,16 @@ const RecommPage = () => {
   return (
     <R.Container>
       <R.Box $hasItems={list.length > 0}>
-        {list.length === 0 ? (
-          <>
-            <R.BgLogo src="/images/components/likedLogo.svg" />
-            <R.Coment>
-              행동 기반 추천 AI를 이용하여 <br />
-              나에게 딱 맞는 반려동물을 만나보세요!
-            </R.Coment>
+        <R.BgLogo src="/images/components/likedLogo.svg" />
+        <R.Coment>
+          행동 기반 추천 AI를 이용하여 <br />
+          나에게 딱 맞는 반려동물을 만나보세요!
+        </R.Coment>
 
-            <R.GotoMainBtn onClick={() => navigate("/AIRecommList")}>
-              나에게 맞는 반려동물 찾기
-              <img src="/images/components/rightBtn.svg" />
-            </R.GotoMainBtn>
-          </>
-        ) : (
-          list.map((item) => <BottomCard key={item.desertionNo} item={item} />)
-        )}
+        <R.GotoMainBtn onClick={() => navigate("/AIRecommList")}>
+          나에게 맞는 반려동물 찾기
+          <img src="/images/components/rightBtn.svg" />
+        </R.GotoMainBtn>
       </R.Box>
     </R.Container>
   );

@@ -19,15 +19,14 @@ export const Container = styled.div`
 export const Box = styled.div`
   width: 100%;
   //   min-height: 100vh;
-  display: flex;
   flex-direction: column;
+  display: flex;
+  padding-bottom: 100px;
   align-items: center;
-  margin-bottom: 10vh;
-
+  justify-content: center;
   ${(props) =>
     props.$hasItems &&
     `
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding: 0 10px;
   `}

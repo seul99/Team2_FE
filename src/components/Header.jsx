@@ -66,13 +66,15 @@ const SaveText = styled.div`
 
 const AIText = styled.div`
   color: #000;
+  text-align: center;
   font-feature-settings: "liga" off, "clig" off;
   font-family: Pretendard;
-  font-size: 15px;
+  font-size: 14px;
   font-style: normal;
-  margin-right: 39%;
   font-weight: 400;
+  margin-left: 35%;
 `;
+
 const Header = ({ type }) => {
   const navigate = useNavigate();
   const location = useLocation();
