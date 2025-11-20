@@ -1,46 +1,36 @@
+// src/styles/StyledChat.jsx
 import styled from "styled-components";
 
-/* =======================
-   페이지 전체 레이아웃
-   ======================= */
-
 export const Container = styled.div`
-  width: 100%;
-  height: 100%; /* Layout.Box 안에서 꽉 채우기 */
-  position: relative; /* 아래 absolute들의 기준 */
-  display: flex;
-`;
-
-/* 위쪽 컨텐츠(보니, 카드, 채팅 메시지)가 들어가는 영역
-   - Layout.Box 안에서
-   - 위(top:0)부터, 아래에서 96px(채팅바 + 마진)까지 사용 */
-export const ContentArea = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 96px; /* 👈 채팅바 영역만큼 비워두기 */
-
-  padding: 32px 24px 0;
-  box-sizing: border-box;
-
-  overflow-y: auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 100%;
+  min-height: 0;
+`;
+
+/* 상단 ~ 카드/메시지까지 스크롤 되는 영역 */
+export const ContentArea = styled.div`
+  flex: 1;
+  overflow-y: auto;
+
+  padding: 32px 24px 8px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
 
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
-/* 인트로 래퍼 (처음 화면) */
 export const IntroWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-top: 8px;
+  margin-top: 70px;
 `;
 
 /* =======================
@@ -91,13 +81,14 @@ export const SectionWrapper = styled.div`
   gap: 12px;
 
   width: 100%;
-  padding: 0 2px 20px;
-  margin-top: 8px;
+  margin-top: 100px;
+  padding: 0 2px 4px;
 `;
 
 export const Section = styled.section`
   display: flex;
   flex-direction: column;
+
   align-items: flex-start;
   width: 100%;
 `;
@@ -114,7 +105,6 @@ export const SectionTitle = styled.h3`
 export const FaqCard = styled.div`
   width: 100%;
   max-width: 170px;
-  height: 67px;
   flex-shrink: 0;
 
   border-radius: 14px;
@@ -124,7 +114,8 @@ export const FaqCard = styled.div`
   padding: 14px;
 
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 
   background: rgba(255, 248, 207, 0.9);
   box-shadow: 1px 2px 7.8px 1px rgba(0, 0, 0, 0.25);
@@ -192,25 +183,34 @@ export const Button = styled.button`
 `;
 
 /* =======================
-   하단 입력창 (Layout.Box 안 바닥 기준)
+   하단 입력창 (네비바처럼 고정)
    ======================= */
 
 export const InputWrapper = styled.div`
-  position: absolute; 
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
+  width: 100%;
+  max-width: 390px; /* Layout Box와 동일 폭 */
+  margin: 0 auto;
+
+  padding: 12px 24px 20px;
+  box-sizing: border-box;
+
+  background: rgba(251, 246, 255, 0.88);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
 
-  z-index: 10;
+  z-index: 20;
 `;
 
 export const InputArea = styled.div`
   position: relative;
+
   flex: 1;
 `;
 
@@ -222,13 +222,15 @@ export const ChatInput = styled.input`
   border: none;
 
   box-shadow: 0 0 0 1px #f0b2c0;
-  background-color: transparent;
+  background: rgba(251, 246, 255, 1);
 
   padding-left: 23px;
   padding-right: 40px;
   font-family: Inter;
   font-size: 13px;
   font-weight: 400;
+
+  flex-shrink: 0;
 
   &::placeholder {
     color: #000000;
@@ -241,13 +243,11 @@ export const ChatInput = styled.input`
 export const MicInput = styled.button`
   width: 56px;
   height: 56px;
-  min-width: 56px;
-  min-height: 56px;
 
   border: none;
   border-radius: 50%;
   box-shadow: 0 0 0 1px #f0b2c0;
-  background: transparent;
+  background: rgba(251, 246, 255, 0.88);
   cursor: pointer;
 
   display: flex;
@@ -255,6 +255,10 @@ export const MicInput = styled.button`
   align-items: center;
   padding: 14px;
   box-sizing: border-box;
+
+  &:active {
+    outline: none;
+  }
 `;
 
 export const SearchIcon = styled.button`
@@ -280,7 +284,6 @@ export const MessageList = styled.div`
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  padding-bottom: 30px;
 `;
 
 export const SenderName = styled.div`
@@ -314,14 +317,16 @@ export const MessageBubble = styled.div`
     props.$isMine
       ? `
       align-self: flex-end;
+      border-radius: 8px;
+      border: 1px solid #F0B2C0;
+      background: rgba(255, 255, 255, 0.5);
     `
       : `
       align-self: flex-start;
+      border-radius: 8px;
+      border: 1px solid #F0B2C0;
+      background: rgba(255, 255, 255, 0.5);
     `}
-
-  border-radius: 8px;
-  border: 1px solid #f0b2c0;
-  background: rgba(255, 255, 255, 0.5);
 
   color: #160211;
   font-family: Pretendard;

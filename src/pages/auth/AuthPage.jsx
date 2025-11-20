@@ -4,7 +4,6 @@ import {
   AuthPageWrapper,
   ImageWrapper,
   Introduction,
-  ImageContainer,
   Card,
   AppLogo,
   CardInfo,
@@ -20,10 +19,10 @@ const AuthPage = () => {
   return (
     <AuthPageWrapper>
       {/* 상단 영역: 일러스트 + 소개 문구 */}
-      <ImageContainer>
+      <>
         <ImageWrapper />
         <Introduction />
-      </ImageContainer>
+      </>
 
       {/* 하단 카드 영역 */}
       <Card>

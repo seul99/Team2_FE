@@ -1,3 +1,4 @@
+// src/pages/chat/ChatbotPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as C from "../../styles/StyledChat";
@@ -14,72 +15,49 @@ export default function ChatbotPage() {
   const nickname = localStorage.getItem("nickname") || "ME";
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [isChatStarted, setIsChatStarted] = useState(false);
-
-  // const BOT_DUMMY_REPLY =
-  //   "네, 보호소 방문 가능합니다! 입양 전에는 해당 보호소의 전화 연결 버튼을 눌러 상담";
 
   const handleSend = async () => {
     const text = inputValue.trim();
-    if (text === "") return;
+    if (!text) return;
 
     const newUserMessage = {
       id: Date.now(),
       sender: "user",
-      text: text,
+      text,
     };
 
-    // 기존 메시지에 사용자 메시지 추가
     setMessages((prev) => [...prev, newUserMessage]);
     setIsChatStarted(true);
     setInputValue("");
 
     try {
-      // 저장된 토큰 가져오기
       const accessToken = localStorage.getItem("access");
-      console.log("현재 토큰 값:", accessToken);
-      // API 요청
       const res = await axios.post(
         `${API_BASE_URL}/api/rag/query`,
-        {
-          query: text,
-        },
+        { query: text },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`, // 토큰을 헤더에 포함해서 인증
+            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
         }
       );
 
-      console.log("Chat Response:", res.data);
-
-      const botResponseText = res.data.data.answer;
-
       const botReply = {
         id: Date.now() + 1,
         sender: "bot",
-        text: botResponseText,
+        text: res.data.data.answer,
       };
-
-      // 봇 응답 메시지도 추가
       setMessages((prev) => [...prev, botReply]);
     } catch (error) {
-      console.error("API 에러 발생했습니다 ㅠㅠ: ", error);
-
-      // 에러 메시지 표시
       const errorMessage = {
         id: Date.now() + 2,
         sender: "bot",
-        text: "죄송합니다. 답변을 가져오는데 오류가 발생했습니다... 다시 시도 해주세요.😭",
+        text: "죄송합니다. 답변을 가져오는데 오류가 발생했습니다. 다시 시도해주세요. 😭",
       };
-
       setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false); // 로딩 끝
     }
-    console.log(messages);
   };
 
   const handleRecommendClick = () => {
@@ -93,17 +71,14 @@ export default function ChatbotPage() {
           <C.MessageList>
             {messages.map((msg) => (
               <React.Fragment key={msg.id}>
-                {msg.sender === "bot" ? (
-                  <C.SenderName $isMine={false}>보니</C.SenderName>
-                ) : (
-                  <C.SenderName $isMine={true}>ME</C.SenderName>
-                )}
+                <C.SenderName $isMine={msg.sender === "user"}>
+                  {msg.sender === "bot" ? "보니" : "ME"}
+                </C.SenderName>
 
                 <C.MessageBubble $isMine={msg.sender === "user"}>
                   {msg.sender === "bot" && (
                     <C.SparkleIcon src={sparkleIcon} alt="sparkle" />
                   )}
-
                   <C.MessageText>{msg.text}</C.MessageText>
                 </C.MessageBubble>
               </React.Fragment>
@@ -116,11 +91,13 @@ export default function ChatbotPage() {
             <C.ImageOverlapContainer>
               <C.CharacterImage src={boniImg} alt="챗봇 캐릭터 보니" />
             </C.ImageOverlapContainer>
+
             <C.CtaText>
               보니에게
               <br />
               무엇이든 물어보세요!
             </C.CtaText>
+
             <C.SectionWrapper>
               <C.Section>
                 <C.SectionTitle>자주 묻는 질문</C.SectionTitle>
@@ -131,6 +108,7 @@ export default function ChatbotPage() {
                   <span>🐾 입양 전 방문이 가능한가요?</span>
                 </C.FaqCard>
               </C.Section>
+
               <C.Section>
                 <C.SectionTitle>AI 기반 유기동물 추천</C.SectionTitle>
                 <C.AiCard onClick={handleRecommendClick}>
@@ -155,12 +133,12 @@ export default function ChatbotPage() {
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
           <C.SearchIcon onClick={handleSend}>
-            <img src={search} style={{ width: "20px", height: "20px" }} />
+            <img src={search} style={{ width: 20, height: 20 }} />
           </C.SearchIcon>
         </C.InputArea>
 
         <C.MicInput>
-          <img src={mic} style={{ width: "15px", height: "20px" }} />
+          <img src={mic} style={{ width: 20, height: 26 }} />
         </C.MicInput>
       </C.InputWrapper>
     </C.Container>
