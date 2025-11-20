@@ -6,10 +6,19 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 0; /* 부모(Box)가 100%일 때 내부 스크롤용 */
+  min-height: 0;
 `;
 
-/* 상단 ~ 카드/메시지까지 스크롤 되는 영역 */
+export const IntroWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  padding-top: 32px;
+  padding-bottom: 24px;
+`;
+
 export const ContentArea = styled.div`
   flex: 1;
   min-height: 0;
@@ -24,18 +33,6 @@ export const ContentArea = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-export const IntroWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  text-align: center;
-  padding: 24px 0;
-  box-sizing: border-box;
-  min-height: 0;
 `;
 
 export const GreetingText = styled.h1`
