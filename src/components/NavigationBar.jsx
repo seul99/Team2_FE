@@ -26,7 +26,6 @@ const NavigationBar = () => {
       fill_icon: "/images/common/heartIconFilled.png",
     },
     {
-      path: "/MyPage",
       label: "마이페이지",
       icon: "/images/common/userIcon.png",
       fill_icon: "/images/common/userIconFilled.png",

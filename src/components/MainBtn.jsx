@@ -107,7 +107,7 @@ const MainBtn = () => {
             <br />
             맞는 반려동물을 만나보세요!
           </Text>
-          <GoBtn onClick={() => navigate("/ChatbotPage")}>
+          <GoBtn onClick={() => navigate("/RecommPage")}>
             반려동물 추천받기
           </GoBtn>
         </BtnWrap>

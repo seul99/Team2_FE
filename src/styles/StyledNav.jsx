@@ -7,6 +7,7 @@ export const NavContainer = styled.nav`
   bottom: 0;
 
   width: 100%;
+  height: 64px;
   display: flex;
   justify-content: center;
   z-index: 10;
@@ -17,20 +18,21 @@ export const NavBar = styled.nav`
   height: 90px;
 
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 
   background-color: #fbe5e9;
   border-top: 1.5px solid #ffffffff;
-  border-radius: 30px 30px 0px 0px;
   overflow: hidden;
 `;
 
 // 개별 탭
 export const NavItem = styled.div`
   display: flex;
+  flex: 1;
   position: relative;
   flex-direction: column;
+  padding-bottom: 25px;
   align-items: center;
   justify-content: center;
   color: ${({ $active }) => ($active ? "#FF5E82" : "#868DA6")};
@@ -40,8 +42,8 @@ export const NavItem = styled.div`
 
 // 아이콘
 export const NavIcon = styled.img`
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   margin-bottom: 4px;
 `;
 
@@ -62,7 +64,6 @@ export const NavLabel = styled.p`
   font-feature-settings: "liga" off, "clig" off;
 `;
 
-// 챗봇 버튼 (필요하면 사용)
 export const ChatBotButton = styled.button`
   background-color: #fbe5e9;
   border-radius: 150px;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as C from "../../styles/StyledChat";
-import chatbotCharacter from "/images/chatbot/boni-character.png";
+import boniImg from "/images/chatbot/boni-character.png";
 import search from "/images/chatbot/search.png";
 import mic from "/images/chatbot/mic.png";
 import sparkleIcon from "/images/chatbot/sparkle-icon.png";
@@ -114,7 +114,7 @@ export default function ChatbotPage() {
             <C.GreetingText>안녕하세요, {nickname}님</C.GreetingText>
 
             <C.ImageOverlapContainer>
-              <C.CharacterImage src={chatbotCharacter} alt="챗봇 캐릭터 보니" />
+              <C.CharacterImage src={boniImg} alt="챗봇 캐릭터 보니" />
             </C.ImageOverlapContainer>
             <C.CtaText>
               보니에게
