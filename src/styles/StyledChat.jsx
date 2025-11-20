@@ -6,12 +6,13 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 0;
+  min-height: 0; /* 부모(Box)가 100%일 때 내부 스크롤용 */
 `;
 
 /* 상단 ~ 카드/메시지까지 스크롤 되는 영역 */
 export const ContentArea = styled.div`
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
 
   padding: 32px 24px 8px;
@@ -27,15 +28,15 @@ export const ContentArea = styled.div`
 
 export const IntroWrapper = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   text-align: center;
-  margin-top: 70px;
+  padding: 24px 0;
+  box-sizing: border-box;
+  min-height: 0;
 `;
-
-/* =======================
-   상단 컨텐츠
-   ======================= */
 
 export const GreetingText = styled.h1`
   color: #000;
@@ -46,7 +47,6 @@ export const GreetingText = styled.h1`
 `;
 
 export const ImageOverlapContainer = styled.div`
-  position: relative;
   width: 220px;
   height: 200px;
 
@@ -58,7 +58,6 @@ export const ImageOverlapContainer = styled.div`
 `;
 
 export const CharacterImage = styled.img`
-  position: absolute;
   object-fit: contain;
 `;
 
@@ -68,12 +67,8 @@ export const CtaText = styled.h2`
   font-size: 18px;
   font-weight: 400;
   line-height: 1.37;
-  margin: 0 0 40px;
+  margin: 0 0 32px;
 `;
-
-/* =======================
-   카드 영역 (FAQ / AI 추천)
-   ======================= */
 
 export const SectionWrapper = styled.div`
   display: flex;
@@ -81,14 +76,13 @@ export const SectionWrapper = styled.div`
   gap: 12px;
 
   width: 100%;
-  margin-top: 100px;
+  margin-top: 24px;
   padding: 0 2px 4px;
 `;
 
 export const Section = styled.section`
   display: flex;
   flex-direction: column;
-
   align-items: flex-start;
   width: 100%;
 `;
@@ -183,61 +177,66 @@ export const Button = styled.button`
 `;
 
 /* =======================
-   하단 입력창 (네비바처럼 고정)
+   하단 입력창 (flex 레이아웃, position 없음)
    ======================= */
 
 export const InputWrapper = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
   width: 100%;
-  max-width: 390px; /* Layout Box와 동일 폭 */
-  margin: 0 auto;
-
   padding: 12px 24px 20px;
   box-sizing: border-box;
 
-  background: rgba(251, 246, 255, 0.88);
+  background: rgba(251, 246, 255, 0.95); /* 불투명에 가까운 배경 */
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
 
-  z-index: 20;
+  flex-shrink: 0; /* 높이 유지해서 눌리지 않게 */
 `;
 
 export const InputArea = styled.div`
-  position: relative;
-
   flex: 1;
-`;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
-export const ChatInput = styled.input`
-  width: 100%;
-  height: 56px;
-  min-height: 56px;
   border-radius: 80px;
-  border: none;
-
   box-shadow: 0 0 0 1px #f0b2c0;
   background: rgba(251, 246, 255, 1);
 
-  padding-left: 23px;
-  padding-right: 40px;
+  padding: 0 16px 0 23px;
+  box-sizing: border-box;
+`;
+
+export const ChatInput = styled.input`
+  flex: 1;
+  height: 56px;
+  min-height: 56px;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
   font-family: Inter;
   font-size: 13px;
   font-weight: 400;
 
-  flex-shrink: 0;
-
   &::placeholder {
     color: #000000;
   }
-  &:focus {
-    outline: none;
-  }
+`;
+
+export const SearchIcon = styled.button`
+  width: 24px;
+  height: 24px;
+
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const MicInput = styled.button`
@@ -247,7 +246,7 @@ export const MicInput = styled.button`
   border: none;
   border-radius: 50%;
   box-shadow: 0 0 0 1px #f0b2c0;
-  background: rgba(251, 246, 255, 0.88);
+  background: rgba(251, 246, 255, 0.95);
   cursor: pointer;
 
   display: flex;
@@ -256,23 +255,7 @@ export const MicInput = styled.button`
   padding: 14px;
   box-sizing: border-box;
 
-  &:active {
-    outline: none;
-  }
-`;
-
-export const SearchIcon = styled.button`
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  right: 12px;
-  top: 18px;
-  background: transparent;
-  border: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-shrink: 0;
 `;
 
 /* =======================
