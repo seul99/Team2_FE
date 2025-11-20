@@ -2,10 +2,9 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
   min-height: 0;
 `;
 
@@ -23,16 +22,8 @@ export const ContentArea = styled.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-
-  padding: 32px 24px 8px;
+  padding: 24px;
   box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export const GreetingText = styled.h1`
@@ -173,22 +164,15 @@ export const Button = styled.button`
   }
 `;
 
-/* =======================
-   하단 입력창 (flex 레이아웃, position 없음)
-   ======================= */
-
 export const InputWrapper = styled.div`
-  width: 100%;
+  flex-shrink: 0;
   padding: 12px 24px 20px;
-  box-sizing: border-box;
-
-  background: rgba(251, 246, 255, 0.95); /* 불투명에 가까운 배경 */
+  background: rgba(251, 246, 255, 0.95);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   gap: 12px;
 
-  flex-shrink: 0; /* 높이 유지해서 눌리지 않게 */
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const InputArea = styled.div`
