@@ -18,7 +18,7 @@ export const NavBar = styled.nav`
   height: 90px;
 
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 
   background-color: #fbe5e9;
@@ -29,6 +29,7 @@ export const NavBar = styled.nav`
 // 개별 탭
 export const NavItem = styled.div`
   display: flex;
+  flex: 1;
   position: relative;
   flex-direction: column;
   padding-bottom: 25px;
