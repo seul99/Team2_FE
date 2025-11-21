@@ -74,7 +74,8 @@ const MainPage = () => {
         }
       },
       {
-        root: bottomBoxRef.current,
+        // root: bottomBoxRef.current,
+        root: null,
         threshold: 1,
       }
     );
