@@ -80,7 +80,9 @@ const Layout = () => {
     "/Shelter",
     "/AnimalList",
     "/RecommPage",
+    "/PreferencePage",
     "/AIRecommList",
+
     "/MyPage",
   ];
 
@@ -95,6 +97,7 @@ const Layout = () => {
     "/SavePage",
     "/SearchPage",
     "/AnimalList",
+    "/PreferencePage",
     "/RecommPage",
     "/AIRecommList",
     "/MyPage",
