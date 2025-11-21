@@ -9,6 +9,11 @@ export default function InputBar({
   onMicClick,
   placeholder = "무엇이든 물어보세요.",
 }) {
+  const handleSend = () => {
+    if (!value.trim()) return; // 비어있으면 전송 X
+    onSend(value); 
+  };
+
   return (
     <C.InputWrapper>
       <C.InputArea>
@@ -16,9 +21,10 @@ export default function InputBar({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          onKeyDown={(e) => e.key === "Enter" && onSend()}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
-        <C.SearchIcon onClick={onSend}>
+
+        <C.SearchIcon onClick={handleSend}>
           <img src={search} style={{ width: 20, height: 20 }} />
         </C.SearchIcon>
       </C.InputArea>
