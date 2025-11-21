@@ -232,17 +232,34 @@ export const SenderName = styled.div`
 
 export const MessageBubble = styled.div`
   display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 6px;
+
+  width: fit-content;
   max-width: 90%;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #f0b2c0;
-  background: rgba(255, 255, 255, 0.5);
+  padding: 12px 14px;
+  line-height: 1.5;
+
   ${(props) =>
-    props.$isMine ? "align-self: flex-end;" : "align-self: flex-start;"}
+    props.$isMine
+      ? `
+    align-self: flex-end;
+    border-radius: 8px;
+    border: 1px solid #F0B2C0;
+    background: rgba(255, 255, 255, 0.5);
+  `
+      : `
+    align-self: flex-start;
+    border-radius: 8px;
+    border: 1px solid #F0B2C0;
+    background: rgba(255, 255, 255, 0.5);
+  `}
+
   color: #160211;
   font-family: Pretendard;
   font-size: 9px;
-  line-height: 1.5;
+  font-weight: 400;
   word-break: break-word;
 `;
 
@@ -315,4 +332,42 @@ export const MicInput = styled.button`
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
+`;
+
+// ===== ChatPage 전용 추가 스타일 =====
+
+export const ChatScrollArea = styled(MessageList)`
+  padding-bottom: 120px; /* 하단 InputBar 겹침 방지 */
+`;
+
+export const MessageGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: ${(props) => (props.$isMine ? "flex-end" : "flex-start")};
+`;
+
+export const MessageText = styled.div`
+  word-break: break-word;
+  white-space: pre-wrap;
+  font-size: 9px;
+  line-height: 1.5;
+`;
+
+export const BubbleRow = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  ${(props) =>
+    props.$isMine
+      ? "justify-content: flex-end;"
+      : "justify-content: flex-start;"}
+`;
+
+export const ChatInputArea = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;

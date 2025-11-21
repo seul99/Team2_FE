@@ -4,41 +4,34 @@ import ChatPage from "./ChatPage";
 
 export default function ChatbotPage() {
   const [isChatStarted, setIsChatStarted] = useState(false);
-  const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [autoSend, setAutoSend] = useState("");
 
-  const nickname = localStorage.getItem("useId");
+  // IntroPage에서 질문을 받으면 ChatPage로 전환
+  const startChat = (text) => {
+    if (!text || !text.trim()) return;
 
-  const handleSendFromIntro = () => {
-    if (!inputValue.trim()) return;
-
-   
-    setIsChatStarted(true);
-
-    setMessages((prev) => [
-      ...prev,
-      { id: Date.now(), sender: "user", text: inputValue },
-    ]);
-
+    setAutoSend(text);
     setInputValue("");
+    setIsChatStarted(true);
   };
 
   return (
     <>
       {!isChatStarted ? (
         <IntroPage
-          nickname={nickname}
           inputValue={inputValue}
           setInputValue={setInputValue}
-          onSend={handleSendFromIntro}
+          onSend={startChat}
         />
       ) : (
         <ChatPage
-          nickname={nickname}
           messages={messages}
           setMessages={setMessages}
           inputValue={inputValue}
           setInputValue={setInputValue}
+          autoSend={autoSend}
         />
       )}
     </>

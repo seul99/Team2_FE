@@ -5,6 +5,7 @@ import MainPage from "./pages/main/MainPage";
 import WelcomePage from "./pages/auth/WelcomePage";
 import AuthPage from "./pages/auth/AuthPage";
 import ChatbotPage from "./pages/chatbot/ChatbotPage";
+import IntroPage from "./pages/chatbot/IntroPage";
 import SearchPage from "./pages/search/SearchPage";
 import SavePage from "./pages/save/SavePage";
 import Detail from "./pages/detail/Detail";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/WelcomePage" element={<WelcomePage />} />
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/ChatbotPage" element={<ChatbotPage />} />
+          <Route path="/IntroPage" element={<IntroPage />} />
           <Route path="/SearchPage" element={<SearchPage />} />
           <Route path="/SavePage" element={<SavePage />} />
           {/* <Route path="/Detail/:id" element={<Detail />} /> */}
