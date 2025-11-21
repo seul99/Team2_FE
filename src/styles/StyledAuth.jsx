@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import kakaoLogo from "/images/auth/kakaoLogo.png";
-import textLogo from "/images/auth/TextLogo.png";
+import textLogo from "/images/auth/TextLogo.svg";
 import introduction from "/images/auth/Introduction.png";
 import ribbonPuppys from "/images/auth/RibbonPuppys.png";
 
