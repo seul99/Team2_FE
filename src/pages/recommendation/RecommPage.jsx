@@ -16,7 +16,7 @@ const RecommPage = () => {
           나에게 딱 맞는 반려동물을 만나보세요!
         </R.Coment>
 
-        <R.GotoMainBtn onClick={() => navigate("/AIRecommList")}>
+        <R.GotoMainBtn onClick={() => navigate("/PreferencePage")}>
           나에게 맞는 반려동물 찾기
           <img src="/images/components/rightBtn.svg" />
         </R.GotoMainBtn>
