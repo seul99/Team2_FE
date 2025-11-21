@@ -2,6 +2,7 @@ import React from "react";
 import * as C from "../../styles/StyledChat";
 import InputBar from "./InputBar";
 import boniImg from "/images/chatbot/boni-character.png";
+import { useNavigate } from "react-router-dom";
 
 const IntroPage = ({ inputValue, setInputValue, onSend }) => {
   // FAQ 클릭, 바로 ChatPage로 전환 + 메시지 자동 전송
@@ -13,6 +14,8 @@ const IntroPage = ({ inputValue, setInputValue, onSend }) => {
   const handleIntroSend = (text) => {
     onSend(text);
   };
+
+  const navigate = useNavigate();
 
   return (
     <C.IntroContainer>
