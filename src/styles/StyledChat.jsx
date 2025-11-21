@@ -4,12 +4,12 @@ export const IntroContainer = styled.div`
   position: relative;
   width: 100%;
   max-width: 390px;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   overflow-y: auto;
-  padding-bottom: 90px; /* InputWrapper 높이만큼 여백 */
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     display: none;
@@ -36,6 +36,7 @@ export const VisualArea = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 20px;
+  box-sizing: border-box;
 `;
 
 export const VisualImage = styled.img`
@@ -90,6 +91,7 @@ export const QuickSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-sizing: border-box;
 `;
 
 export const TopSpacer = styled.div`
@@ -250,22 +252,16 @@ export const SparkleIcon = styled.img`
   margin-right: 8px;
 `;
 
-
 export const InputWrapper = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   width: 100%;
-  max-width: 390px;
-  padding: 12px 20px 20px;
+  padding: 12px 10px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
-  z-index: 100;
   background: transparent;
-  );
+  box-sizing: border-box;
 `;
 
 export const InputArea = styled.div`

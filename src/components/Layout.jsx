@@ -10,6 +10,7 @@ import chatbotBg from "/images/components/ChatbotBackground.png";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -23,7 +24,8 @@ const Box = styled.div`
   position: relative;
   margin: 0 auto;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
+  height: 100dvh;
   max-width: 390px;
   max-height: 844px;
   background-image: url(${(props) => props.$backgroundImage});
