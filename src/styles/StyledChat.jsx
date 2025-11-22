@@ -87,7 +87,8 @@ export const CharacterWrapper = styled.div`
 `;
 
 export const QuickSection = styled.div`
-  padding: 20px 20px 30px;
+  padding: 0 20px;
+  margin-top: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -140,7 +141,7 @@ export const CharacterImage = styled.img`
 export const CtaText = styled.h2`
   color: #000;
   font-family: Pretendard;
-  font-size: 18px;
+  font-size: 10px;
   font-weight: 400;
   line-height: 1.37;
   text-align: center;
@@ -152,6 +153,8 @@ export const SectionWrapper = styled.div`
   justify-content: space-between;
   gap: 12px;
   width: 100%;
+  height: 100%;
+  align-items: stretch;
 `;
 
 export const Section = styled.div`
@@ -159,6 +162,7 @@ export const Section = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 12px;
+  height: 100%;
 `;
 
 export const SectionTitle = styled.h3`
@@ -166,7 +170,17 @@ export const SectionTitle = styled.h3`
   font-family: Pretendard;
   font-size: 13px;
   font-weight: 500;
-  margin: 0 0 4px 8px;
+  margin: 0;
+  margin-left: 8px;
+  margin-bottom: 4px;
+  padding: 0;
+`;
+
+export const CardsGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* ✔ 왼쪽/오른쪽 동일 높이 확보 */
+  gap: 12px;
 `;
 
 /* FAQ 카드 & AI 카드 공유 스타일 */
@@ -176,14 +190,11 @@ const BaseCard = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.8);
   background: rgba(255, 248, 207, 0.85);
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-  padding: 16px 18px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   color: #000;
   font-family: Pretendard;
-  font-size: 11px;
-  line-height: 1.5;
   cursor: pointer;
   transition: all 0.2s;
 
@@ -191,22 +202,27 @@ const BaseCard = styled.div`
     transform: translateY(-2px);
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
   }
-
-  &:active {
-    transform: translateY(0);
-  }
 `;
 
 export const FaqCard = styled(BaseCard)`
-  min-height: 60px;
+  font-size: 11px;
   font-weight: 400;
+  line-height: 1.4;
+  min-height: 50px;
+  justify-content: center;
 `;
 
 export const AiCard = styled(BaseCard)`
-  min-height: 120px;
-  justify-content: center;
+  flex: 1;
+  font-size: 11px;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.4;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 버튼까지 포함한 레이아웃 */
+  gap: 12px;
+  padding: 20px;
 `;
 
 /* =========================== 채팅 메시지 =========================== */
@@ -305,6 +321,7 @@ export const ChatInput = styled.input`
   &::placeholder {
     color: #000;
     opacity: 0.6;
+    focus: none;
   }
 `;
 

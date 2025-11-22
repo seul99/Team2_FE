@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
-  display: contents;
 `;
 const Ment = styled.div`
   color: #868da6;
@@ -20,7 +19,7 @@ const Box = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   gap: 30px;
   margin: 5px 0;
 `;

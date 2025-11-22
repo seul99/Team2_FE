@@ -55,7 +55,7 @@ const IntroPage = ({ inputValue, setInputValue, onSend }) => {
             <C.SectionTitle>AI 기반 유기동물 추천</C.SectionTitle>
 
             <C.AiCard onClick={() => navigate("/RecommPage")}>
-              🔍 AI를 활용한 맞춤 추천 보러가기
+              🔍 사용자 맞춤 AI를 활용하여 나에게 딱 맞는 반려동물을 만나보세요!
             </C.AiCard>
           </C.Section>
         </C.SectionWrapper>
