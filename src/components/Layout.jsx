@@ -1,68 +1,61 @@
 import React from "react";
 import styled from "styled-components";
-import { Outlet, useLocation, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import Header from "./Header";
 import NavigationBar from "./NavigationBar";
 import loginBg from "/images/components/LoginBackground.png";
 import defaultBg from "/images/components/Background.png";
 import chatbotBg from "/images/components/ChatbotBackground.png";
+
 const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   height: 100dvh;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: center;
+  margin: 0;
+  padding: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   background: #f0f0f0;
-  position: relative;
+  overflow: hidden;
 `;
 
 const Box = styled.div`
   position: relative;
-  margin: 0 auto;
   width: 100%;
-  // height: 100%;
+  height: 100vh;
   height: 100dvh;
-  // height: 100dvh;
   max-width: 390px;
-  max-height: 844px;
   background-image: url(${(props) => props.$backgroundImage});
   background-size: cover;
   background-repeat: no-repeat;
-
+  background-position: center;
   display: flex;
   flex-direction: column;
   cursor: default;
-
-  overflow-y: hidden;
+  overflow-y: auto;
   overflow-x: hidden;
 
-  /* Chrome, Safari, Edge */
   &::-webkit-scrollbar {
     display: none;
   }
 
-  /* Firefox */
   scrollbar-width: none;
-
-  /* Optional: iOS smooth */
   -webkit-overflow-scrolling: touch;
 `;
+
 const bgMap = {
   "/": loginBg,
   "/WelcomePage": loginBg,
   "/MainPage": defaultBg,
-  "/detail/*": defaultBg, //변경필요
-  "/SavePage": defaultBg, //변경필요
-  "/SearchPage": defaultBg, // 변경 필요
-  "/ChatbotPage": chatbotBg, // 변경 필요
-  "/Filter": defaultBg, // 변경 필요
-  "/Shelter": defaultBg, // 변경 필요
-  "/AnimalList": defaultBg, // 변경 필요
-  "/oidc-callback": defaultBg, // 변경 필요
+  "/detail/*": defaultBg,
+  "/SavePage": defaultBg,
+  "/SearchPage": defaultBg,
+  "/ChatbotPage": chatbotBg,
+  "/Filter": defaultBg,
+  "/Shelter": defaultBg,
+  "/AnimalList": defaultBg,
+  "/oidc-callback": defaultBg,
 };
 
 const getBackgroundImage = (pathname) => {
@@ -83,14 +76,11 @@ const Layout = () => {
     "/RecommPage",
     "/PreferencePage",
     "/AIRecommList",
-
     "/MyPage",
   ];
 
   const isShowNav = navPages.includes(location.pathname);
-
   const backBtnPages = ["/detail"];
-
   const onlyBackPage = [
     "/Filter",
     "/Shelter",
@@ -114,6 +104,7 @@ const Layout = () => {
   } else if (backBtnPages.some((path) => location.pathname.startsWith(path))) {
     headerType = "back";
   }
+
   const backgroundImage = getBackgroundImage(location.pathname);
 
   return (

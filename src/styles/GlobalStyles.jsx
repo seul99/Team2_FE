@@ -8,14 +8,18 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html,
-  body {
+  body,
+  #root {
     width: 100%;
+    height: 100%;
     max-width: 100vw;
-    overflow-x: hidden;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
   }
 
   body::-webkit-scrollbar {
-    display: none; /* Chrome/Safari/Webkit */
+    display: none;
   }
 
   @font-face {
@@ -25,19 +29,15 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     font-display: swap;
   }
+  
   body {
     background-color: #f0f0f0;
-    height: 100%;
     font-family: 'GangwonEduAll', 'Pretendard Variable', Pretendard,
       -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue',
       'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
       'Pyeojin Gothic', 'Cafe24Ohsquare', 'SeoulAlrim', sans-serif,
       'GangwonEduOTF';
     font-weight: 400;
-  }
-
-  #root {
-    height: 100%;
   }
 `;
 
