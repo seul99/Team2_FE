@@ -62,11 +62,13 @@ const IntroPage = ({ inputValue, setInputValue, onSend }) => {
       </C.QuickSection>
 
       {/* 아래 InputBar */}
-      <InputBar
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onSend={handleIntroSend}
-      />
+      <C.IntroInputArea>
+        <InputBar
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onSend={handleIntroSend}
+        />
+      </C.IntroInputArea>
     </C.IntroContainer>
   );
 };

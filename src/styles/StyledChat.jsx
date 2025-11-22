@@ -316,7 +316,7 @@ export const ChatInput = styled.input`
   outline: none;
   background: transparent;
   font-family: Inter;
-  font-size: 13px;
+  font-size: 16px;
 
   &::placeholder {
     color: #000;
@@ -387,4 +387,15 @@ export const ChatInputArea = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+`;
+
+export const IntroInputArea = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2px 10px 15px;
+  background: transparent;
+  background-color: #ffffff;
+  z-index: 10;
 `;
