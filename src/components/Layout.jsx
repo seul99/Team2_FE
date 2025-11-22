@@ -9,7 +9,6 @@ import defaultBg from "/images/components/Background.png";
 import chatbotBg from "/images/components/ChatbotBackground.png";
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
   height: 100dvh;
   margin: 0 auto;
   justify-content: center;
@@ -18,20 +17,21 @@ const Container = styled.div`
   flex-direction: column;
   background: #f0f0f0;
   position: relative;
+  margin-top: 0;
+
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: env(safe-area-inset-top);
 `;
 
 const Box = styled.div`
   position: relative;
   margin: 0 auto;
   width: 100%;
-  height: 100dvh;
-  height: 100dvh;
-  max-width: 390px;
-  max-height: 844px;
+  height: 100%;
   background-image: url(${(props) => props.$backgroundImage});
-
   background-size: cover;
   background-repeat: no-repeat;
+
   display: flex;
   flex-direction: column;
   cursor: default;
