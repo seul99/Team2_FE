@@ -109,6 +109,43 @@ src/
 - 검색/필터/상세/찜 페이지 구현
 - 카테고리/정렬/무한스크롤 담당
 - Vercel 배포
+  
+# ⚙️ 핵심 구현
+## 동적 계층형 필터 시스템 (Dynamic Filtering)
+사용자가 원하는 유기동물을 정교하게 찾을 수 있도록 REST API와 연동된 동적 필터링을 구현했습니다.
+- 동적 지역 선택 (Cascading Select): 시/도(province) 선택 시 해당 지역의 시/군/구(city) 목록을 실시간으로 서버에서 호출하여 사용자에게 유효한 옵션만 제공합니다.
+- 상태 관리 최적화: selected 객체 하나로 여러 필터 값(축종, 성별, 중성화 여부 등)을 통합 관리하여 가독성을 높였습니다.
+- 데이터 정규화: filterConfig 객체를 통한 설정값 관리로 유지보수성을 높이고, react-select 라이브러리를 커스텀하여 모바일 환경에 최적화된 UI를 제공합니다.
+
+```
+// 핵심 로직: 지역 선택에 따른 동적 옵션 호출
+const handleAreaChange = async (v) => {
+  setSelected((prev) => ({ ...prev, area: v, city: null })); // 시/도 변경 시 시/군/구 초기화
+  
+  if (v?.value) {
+    const res = await API.get("/api/animals/cities", { params: { province: v.value } });
+    setCityOptions(res.data?.data.map(c => ({ value: c, label: c })));
+  }
+};
+```
+---
+## 무한 스크롤 & 필터 연동 데이터 페칭
+수천 마리의 유기동물 데이터를 한꺼번에 불러오지 않고, 사용자 스크롤에 맞춰 20개씩 끊어서 불러오는 무한 스크롤을 구현했습니다.
+- 스크롤 이벤트 최적화: scrollTop, clientHeight, scrollHeight를 계산하여 사용자가 바닥에 도달하기 직전(10px 전)에 다음 페이지를 호출하도록 설계했습니다.
+- 중복 호출 방지: isFetching 플래그를 사용하여 데이터가 로딩 중일 때는 추가 요청이 발생하지 않도록 Throttle 개념을 적용했습니다.
+- 필터 상태 동기화: 필터 조건(useLocation state)이 변경될 때마다 페이지 번호를 초기화(setPage(0))하고 새로운 데이터를 불러와 데이터 무결성을 유지했습니다.
+
+```
+// 핵심 로직: 스크롤 감지 및 다음 페이지 호출
+const handleScroll = (e) => {
+  const { scrollTop, clientHeight, scrollHeight } = e.target;
+  const isBottom = scrollTop + clientHeight >= scrollHeight - 10;
+
+  if (isBottom && !isFetching && page + 1 < totalPages) {
+    setPage((prev) => prev + 1);
+  }
+};
+```
 
 # 발표자료 
 ![표지](https://github.com/user-attachments/assets/20590f1b-b280-47c9-aa74-b8d6df17953c)
